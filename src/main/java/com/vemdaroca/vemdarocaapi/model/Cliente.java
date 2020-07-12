@@ -55,12 +55,21 @@ public class Cliente implements Serializable {
 
 	@Column(name = "EMAIL", nullable = false, length = 50)
 	private String email;
+	
+	@Column(name = "STATUS", nullable = false)
+	private char status;
+	
+	@Column(name = "USER", nullable = false, length = 20)
+	private String user;
+	
+	@Column(name = "PASSWORD", nullable = false, length = 100)
+	private String password;
 
 	public Cliente() {
 	}
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
-			String uf, String cep, String bairro, String referencia, String email) {
+			String uf, String cep, String bairro, String referencia, String email, char status, String user, String password) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -74,6 +83,9 @@ public class Cliente implements Serializable {
 		this.bairro = bairro;
 		this.referencia = referencia;
 		this.email = email;
+		this.status = status;
+		this.user = user;
+		this.password = password;
 	}
 
 }

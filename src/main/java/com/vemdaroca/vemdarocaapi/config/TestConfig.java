@@ -38,10 +38,10 @@ public class TestConfig implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		Cliente cl1 = new Cliente(null, "Ana", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com");
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", "senha");
 
 		Cliente cl2 = new Cliente(null, "Anaa", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com");
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", "senha");
 
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00F, UnidMedida.UNIDADE);
 
