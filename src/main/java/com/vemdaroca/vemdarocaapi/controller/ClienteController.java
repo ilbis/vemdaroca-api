@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
 
-
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
