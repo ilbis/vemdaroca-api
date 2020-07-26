@@ -28,9 +28,6 @@ public class Produto implements Serializable {
 	@Column(name = "NOME", nullable = false, unique = true, length = 100)
 	private String nome;
 
-//	@Column(name = "UNIDMEDIDA", nullable = false, length = 10)
-//	private String unidMedida;
-
 	@Column(name = "TIPO", nullable = false, length = 10)
 	private String tipo;
 
@@ -44,7 +41,6 @@ public class Produto implements Serializable {
 	}
 
 	public Produto(Long id, String nome, String tipo, float valor, UnidMedida unidMedida) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;

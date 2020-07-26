@@ -43,7 +43,6 @@ public class ItemPedido implements Serializable {
 	}
 
 	public ItemPedido(Long id, Produto produto, Pedido pedido, Float qtd, Float valor) {
-		super();
 		this.id = id;
 		this.produto = produto;
 		this.pedido = pedido;

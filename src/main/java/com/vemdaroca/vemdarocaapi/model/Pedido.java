@@ -26,21 +26,20 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "DATA", nullable = false, unique = true)
+	@Column(name = "DATA", nullable = false)
 	private Instant data;
 
 	@Column(name = "TOTAL", nullable = false)
 	private Float total;
-
-	@ManyToOne()
-	@JoinColumn(name = "CLIENTE_ID")
-	private Cliente cliente;
+	
+    @ManyToOne
+    @JoinColumn(name="CLIENTE_ID", nullable=false)
+    private Cliente cliente;
 
 	public Pedido() {
 	}
 
 	public Pedido(Long id, Instant data, Float total, Cliente cliente) {
-		super();
 		this.id = id;
 		this.data = data;
 		this.total = total;

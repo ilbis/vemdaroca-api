@@ -23,7 +23,7 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "NOME", nullable = false, unique = true, length = 100)
+	@Column(name = "NOME", nullable = false, length = 100)
 	private String nome;
 
 	@Column(name = "TEL", nullable = false, length = 13)
@@ -59,8 +59,8 @@ public class Cliente implements Serializable {
 	@Column(name = "STATUS", nullable = false)
 	private char status;
 
-	@Column(name = "USER", nullable = false, length = 20)
-	private String user;
+	@Column(name = "USERNAME", nullable = false, length = 20)
+	private String username;
 
 	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
@@ -72,9 +72,8 @@ public class Cliente implements Serializable {
 	}
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
-			String uf, String cep, String bairro, String referencia, String email, char status, String user,
+			String uf, String cep, String bairro, String referencia, String email, char status, String username,
 			String password, String salt) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
@@ -88,7 +87,7 @@ public class Cliente implements Serializable {
 		this.referencia = referencia;
 		this.email = email;
 		this.status = status;
-		this.user = user;
+		this.username = username;
 		this.password = password;
 		this.salt = salt;
 	}
