@@ -1,6 +1,5 @@
 package com.vemdaroca.vemdarocaapi.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,16 +16,21 @@ public class ClienteService {
 	ClienteRepository clienteRepository;
 
 	public List<Cliente> getAllClientes() {
-		return clienteRepository.findAll();
+		return clienteRepository.findAllStatusActive();
 	}
 
 	public Cliente createCliente(Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 
-//	public Cliente deleteCliente(Long id) {
-//		Optional<Cliente> cliente = clienteRepository.findById(id);
-//		cliente.setStatus('I');
-//		return clienteRepository.saveAll(Arrays.asList(cliente));
-//	}
+	public Cliente deleteCliente(Long id) {
+		Cliente cl1 = new Cliente();
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		if (null != cliente) {
+			cl1 = cliente.get();
+			cl1.setStatus('I');
+			return clienteRepository.save(cl1);
+		}
+		return null;
+	}
 }
