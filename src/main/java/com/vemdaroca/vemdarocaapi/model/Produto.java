@@ -11,11 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 @Entity
 @Table(name = "PRODUTO")
 public class Produto implements Serializable {
@@ -45,6 +40,46 @@ public class Produto implements Serializable {
 		this.nome = nome;
 		this.tipo = tipo;
 		this.valor = valor;
+		this.unidMedida = unidMedida;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public float getValor() {
+		return valor;
+	}
+
+	public void setValor(float valor) {
+		this.valor = valor;
+	}
+
+	public UnidMedida getUnidMedida() {
+		return unidMedida;
+	}
+
+	public void setUnidMedida(UnidMedida unidMedida) {
 		this.unidMedida = unidMedida;
 	}
 

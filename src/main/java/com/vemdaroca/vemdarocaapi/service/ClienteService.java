@@ -15,22 +15,53 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository clienteRepository;
 
-	public List<Cliente> getAllClientes() {
+	public List<Cliente> getAllActive() {
 		return clienteRepository.findAllStatusActive();
 	}
 
-	public Cliente createCliente(Cliente cliente) {
+	public List<Cliente> getAll() {
+		return clienteRepository.findAll();
+	}
+
+	public Cliente getById(Long id) {
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		return cliente.get();
+	}
+
+	public Cliente create(Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 
-	public Cliente deleteCliente(Long id) {
+	public Cliente delete(Long id) {
 		Cliente cl1 = new Cliente();
 		Optional<Cliente> cliente = clienteRepository.findById(id);
-		if (null != cliente) {
-			cl1 = cliente.get();
-			cl1.setStatus('I');
-			return clienteRepository.save(cl1);
-		}
-		return null;
+		cl1 = cliente.get();
+		cl1.setStatus('I');
+		return clienteRepository.save(cl1);
+	}
+
+	public Cliente update(Long id, Cliente cliente) {
+		Cliente entity = clienteRepository.findById(id).get();
+		updateData(entity, cliente);
+		return clienteRepository.save(entity);
+	}
+
+	private void updateData(Cliente entity, Cliente cliente) {
+		entity.setNome(cliente.getNome());
+		entity.setTel(cliente.getTel());
+		entity.setRua(cliente.getRua());
+		entity.setNumero(cliente.getNumero());
+		entity.setBlocoAp(cliente.getBlocoAp());
+		entity.setComplemento(cliente.getComplemento());
+		entity.setUf(cliente.getUf());
+		entity.setCep(cliente.getCep());
+		entity.setBairro(cliente.getBairro());
+		entity.setReferencia(cliente.getReferencia());
+		entity.setEmail(cliente.getEmail());
+		entity.setStatus(cliente.getStatus());
+		entity.setUsername(cliente.getUsername());
+		entity.setPassword(cliente.getPassword());
+		entity.setSalt(cliente.getSalt());
+
 	}
 }

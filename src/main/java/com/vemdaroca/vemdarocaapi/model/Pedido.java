@@ -12,11 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 @Entity
 @Table(name = "PEDIDO")
 public class Pedido implements Serializable {
@@ -31,10 +26,10 @@ public class Pedido implements Serializable {
 
 	@Column(name = "TOTAL", nullable = false)
 	private Float total;
-	
-    @ManyToOne
-    @JoinColumn(name="CLIENTE_ID", nullable=false)
-    private Cliente cliente;
+
+	@ManyToOne
+	@JoinColumn(name = "CLIENTE_ID", nullable = false)
+	private Cliente cliente;
 
 	public Pedido() {
 	}
@@ -45,4 +40,37 @@ public class Pedido implements Serializable {
 		this.total = total;
 		this.cliente = cliente;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Instant getData() {
+		return data;
+	}
+
+	public void setData(Instant data) {
+		this.data = data;
+	}
+
+	public Float getTotal() {
+		return total;
+	}
+
+	public void setTotal(Float total) {
+		this.total = total;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 }
