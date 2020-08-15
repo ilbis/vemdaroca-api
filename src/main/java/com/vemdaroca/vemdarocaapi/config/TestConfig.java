@@ -60,7 +60,7 @@ public class TestConfig implements CommandLineRunner {
 		Cliente cl2 = new Cliente(null, "Anaa", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
 				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
 
-		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00F, UnidMedida.UNIDADE);
+		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00F, UnidMedida.UNIDADE, 'A');
 
 		Pedido pe1 = new Pedido(null, Instant.now(), 10.00F, cl2);
 

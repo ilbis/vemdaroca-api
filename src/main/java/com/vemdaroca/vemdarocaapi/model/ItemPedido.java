@@ -16,6 +16,9 @@ import javax.persistence.Table;
 public class ItemPedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	//adicionar  nome, tipo, unidademedida 
+	//
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

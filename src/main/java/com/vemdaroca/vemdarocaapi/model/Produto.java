@@ -32,15 +32,27 @@ public class Produto implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private UnidMedida unidMedida;
 
+	@Column(name = "STATUS", nullable = false)
+	private char status;
+
 	public Produto() {
 	}
 
-	public Produto(Long id, String nome, String tipo, float valor, UnidMedida unidMedida) {
+	public Produto(Long id, String nome, String tipo, float valor, UnidMedida unidMedida, char status) {
 		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;
 		this.valor = valor;
 		this.unidMedida = unidMedida;
+		this.status = status;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 
 	public Long getId() {

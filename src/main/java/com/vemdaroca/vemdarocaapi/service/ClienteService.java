@@ -24,8 +24,11 @@ public class ClienteService {
 	}
 
 	public Cliente getById(Long id) {
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
+		return clienteRepository.findById(id).get();
+	}
+
+	public List<Cliente> getByName(String nome) {
+		return clienteRepository.findByName(nome);
 	}
 
 	public Cliente create(Cliente cliente) {
@@ -33,11 +36,11 @@ public class ClienteService {
 	}
 
 	public Cliente delete(Long id) {
-		Cliente cl1 = new Cliente();
+		Cliente entity = new Cliente();
 		Optional<Cliente> cliente = clienteRepository.findById(id);
-		cl1 = cliente.get();
-		cl1.setStatus('I');
-		return clienteRepository.save(cl1);
+		entity = cliente.get();
+		entity.setStatus('I');
+		return clienteRepository.save(entity);
 	}
 
 	public Cliente update(Long id, Cliente cliente) {
@@ -62,6 +65,5 @@ public class ClienteService {
 		entity.setUsername(cliente.getUsername());
 		entity.setPassword(cliente.getPassword());
 		entity.setSalt(cliente.getSalt());
-
 	}
 }
