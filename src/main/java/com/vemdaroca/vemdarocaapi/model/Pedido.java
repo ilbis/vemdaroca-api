@@ -39,6 +39,7 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "CLIENTE_ID", nullable = false)
 	private Cliente cliente;
 
+	//remover EAGER quando em producao
 	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
 	private Set<ItemPedido> items = new HashSet<>();
 
@@ -89,13 +90,13 @@ public class Pedido implements Serializable {
 		return items;
 	}
 
-//	public Double getTotal() {
-//		double sum = 0.0;
-//		for (ItemPedido x : itemsPedido) {
-//			sum += x.getSubTotal();
-//		}
-//		return sum;
-//	}
+	public Double getTotal() {
+		double sum = 0.0;
+		for (ItemPedido x : itemsPedido) {
+			sum += x.getSubTotal();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {
