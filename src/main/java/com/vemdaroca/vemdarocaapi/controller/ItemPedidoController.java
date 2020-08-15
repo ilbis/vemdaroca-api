@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.service.ItemPedidoService;
 
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping("/itempedido")
@@ -20,8 +22,9 @@ public class ItemPedidoController {
 	private ItemPedidoService itemPedidoService;
 
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<ItemPedido>> getAllItemsPedido() {
-		return ResponseEntity.ok().body(itemPedidoService.getAllItemsPedido());
+	@ApiOperation(value = "Retorna todos items de pedido")
+	public ResponseEntity<List<ItemPedido>> getAll() {
+		return ResponseEntity.ok().body(itemPedidoService.getAll());
 	}
 
 }
