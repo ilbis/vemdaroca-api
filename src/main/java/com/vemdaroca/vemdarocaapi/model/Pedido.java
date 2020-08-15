@@ -27,6 +27,9 @@ public class Pedido implements Serializable {
 	@Column(name = "TOTAL", nullable = false)
 	private Float total;
 
+	@Column(name = "STATUS", nullable = false)
+	private char status;
+
 	@ManyToOne
 	@JoinColumn(name = "CLIENTE_ID", nullable = false)
 	private Cliente cliente;
@@ -34,10 +37,11 @@ public class Pedido implements Serializable {
 	public Pedido() {
 	}
 
-	public Pedido(Long id, Instant data, Float total, Cliente cliente) {
+	public Pedido(Long id, Instant data, Float total, char status, Cliente cliente) {
 		this.id = id;
 		this.data = data;
 		this.total = total;
+		this.status = status;
 		this.cliente = cliente;
 	}
 
@@ -71,6 +75,14 @@ public class Pedido implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 
 }

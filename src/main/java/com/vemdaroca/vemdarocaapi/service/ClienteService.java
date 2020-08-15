@@ -1,7 +1,6 @@
 package com.vemdaroca.vemdarocaapi.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,9 +35,7 @@ public class ClienteService {
 	}
 
 	public Cliente delete(Long id) {
-		Cliente entity = new Cliente();
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		entity = cliente.get();
+		Cliente entity = clienteRepository.findById(id).get();
 		entity.setStatus('I');
 		return clienteRepository.save(entity);
 	}

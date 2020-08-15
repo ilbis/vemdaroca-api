@@ -40,9 +40,7 @@ public class ProdutoService {
 	}
 
 	public Produto delete(Long id) {
-		Produto entity = new Produto();
-		Optional<Produto> produto = produtoRepository.findById(id);
-		entity = produto.get();
+		Produto entity = produtoRepository.findById(id).get();
 		entity.setStatus('I');
 		return produtoRepository.save(entity);
 	}

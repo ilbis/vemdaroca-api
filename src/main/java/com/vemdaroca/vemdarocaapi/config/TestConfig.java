@@ -57,18 +57,20 @@ public class TestConfig implements CommandLineRunner {
 		Cliente cl1 = new Cliente(null, "Ana", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
 				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
 
-		Cliente cl2 = new Cliente(null, "Anaa", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
+		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "", "", "SP", "01111-111",
 				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
 
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00F, UnidMedida.UNIDADE, 'A');
 
-		Pedido pe1 = new Pedido(null, Instant.now(), 10.00F, cl2);
+		Pedido pe1 = new Pedido(null, Instant.now(), 10.00F, 'A', cl2);
+		
+		Pedido pe2 = new Pedido(null, Instant.now(), 20.00F,'A', cl1);
 
 		ItemPedido it1 = new ItemPedido(null, pr1, pe1, 10F, 25.00F);
 
 		clienteRepository.saveAll(Arrays.asList(cl1, cl2));
 		produtoRepository.saveAll(Arrays.asList(pr1));
-		pedidoRepository.saveAll(Arrays.asList(pe1));
+		pedidoRepository.saveAll(Arrays.asList(pe1, pe2));
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
 	}
