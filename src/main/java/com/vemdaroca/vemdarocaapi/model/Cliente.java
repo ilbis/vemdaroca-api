@@ -24,49 +24,49 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "NOME", nullable = false, length = 100)
+	@Column(name = "NOME", length = 100)
 	private String nome;
 
-	@Column(name = "TEL", nullable = false, length = 13)
+	@Column(name = "TEL", length = 13)
 	private String tel;
 
-	@Column(name = "RUA", nullable = false, length = 100)
+	@Column(name = "RUA", length = 100)
 	private String rua;
 
-	@Column(name = "NUMERO", nullable = false, length = 10)
+	@Column(name = "NUMERO",length = 10)
 	private String numero;
 
-	@Column(name = "BLOCOAP", nullable = true, length = 10)
+	@Column(name = "BLOCOAP", length = 10)
 	private String blocoAp;
 
-	@Column(name = "COMPLEMENTO", nullable = true, length = 50)
+	@Column(name = "COMPLEMENTO", length = 50)
 	private String complemento;
 
-	@Column(name = "UF", nullable = false, length = 2)
+	@Column(name = "UF", length = 2)
 	private String uf;
 
-	@Column(name = "CEP", nullable = false, length = 9)
+	@Column(name = "CEP", length = 9)
 	private String cep;
 
-	@Column(name = "BAIRRO", nullable = false, length = 30)
+	@Column(name = "BAIRRO", length = 30)
 	private String bairro;
 
-	@Column(name = "REFERENCIA", nullable = true, length = 50)
+	@Column(name = "REFERENCIA", length = 50)
 	private String referencia;
 
-	@Column(name = "EMAIL", nullable = false, length = 50)
+	@Column(name = "EMAIL", length = 50)
 	private String email;
 
-	@Column(name = "STATUS", nullable = false)
+	@Column(name = "STATUS")
 	private char status;
 
-	@Column(name = "USERNAME", nullable = false, length = 20)
+	@Column(name = "USERNAME", length = 20)
 	private String username;
 
-	@Column(name = "PASSWORD", nullable = false, length = 100)
+	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "SALT", nullable = false, length = 100)
+	@Column(name = "SALT", length = 100)
 	private String salt;
 
 	@JsonIgnore

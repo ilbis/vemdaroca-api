@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "PEDIDO")
@@ -39,7 +39,7 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "CLIENTE_ID", nullable = false)
 	private Cliente cliente;
 
-	//remover EAGER quando em producao
+	@JsonManagedReference
 	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
 	private Set<ItemPedido> items = new HashSet<>();
 
@@ -92,7 +92,7 @@ public class Pedido implements Serializable {
 
 	public Double getTotal() {
 		double sum = 0.0;
-		for (ItemPedido x : itemsPedido) {
+		for (ItemPedido x : items) {
 			sum += x.getSubTotal();
 		}
 		return sum;

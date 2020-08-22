@@ -14,6 +14,10 @@ public class ItemPedidoService {
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
 
+	public List<ItemPedido> getAllActive() {
+		return itemPedidoRepository.findAllStatusActive();
+	}
+
 	public List<ItemPedido> getAll() {
 		return itemPedidoRepository.findAll();
 	}
@@ -21,10 +25,6 @@ public class ItemPedidoService {
 	public ItemPedido getById(Long id) {
 		return itemPedidoRepository.findById(id).get();
 	}
-
-//	public List<ItemPedido> getByIdPedido(Long id) {
-//		return itemPedidoRepository.findAllByPedido(id);
-//	}
 
 	public ItemPedido create(ItemPedido itemPedido) {
 		return itemPedidoRepository.save(itemPedido);

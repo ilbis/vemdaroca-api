@@ -3,7 +3,6 @@ package com.vemdaroca.vemdarocaapi.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,7 +45,7 @@ public class ClienteController {
 	public ResponseEntity<Cliente> getById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(clienteService.getById(id));
 	}
-	
+
 	@GetMapping(value = "/getCliente")
 	@ApiOperation(value = "Retorna cliente por nome")
 	public ResponseEntity<List<Cliente>> getByName(@RequestParam(value = "nome", required = false) String nome) {

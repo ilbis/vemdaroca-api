@@ -7,6 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -38,6 +39,15 @@ public class ItemPedido implements Serializable {
 		this.status = status;
 	}
 
+	@JsonIgnore
+	public ItemPedidoPK getId() {
+		return id;
+	}
+
+	public void setId(ItemPedidoPK id) {
+		this.id = id;
+	}
+
 	public Double getQtd() {
 		return qtd;
 	}
@@ -62,7 +72,8 @@ public class ItemPedido implements Serializable {
 		this.status = status;
 	}
 
-	@JsonIgnore
+//	@JsonIgnore
+	@JsonBackReference
 	public Pedido getPedido() {
 		return id.getPedido();
 	}

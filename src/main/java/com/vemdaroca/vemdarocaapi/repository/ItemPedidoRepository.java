@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
-//	@Query("SELECT e FROM ItemPedido e WHERE e.pedido.id= :id")
-//	List<ItemPedido> findAllByPedido(Long id);
+
+	@Query("SELECT e FROM ItemPedido e WHERE e.status= 'A'")
+	List<ItemPedido> findAllStatusActive();
 }
