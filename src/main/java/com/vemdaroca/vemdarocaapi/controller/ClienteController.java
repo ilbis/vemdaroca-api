@@ -52,6 +52,12 @@ public class ClienteController {
 		return ResponseEntity.ok().body(clienteService.getByName(nome));
 	}
 
+	@GetMapping(value = "/getByUserName")
+	@ApiOperation(value = "Retorna cliente por username")
+	public ResponseEntity<Cliente> getByUserName(@RequestParam(value = "username", required = false) String username) {
+		return ResponseEntity.ok().body(clienteService.getByUserName(username));
+	}
+
 	@PostMapping
 	@ApiOperation(value = "Criar um cliente")
 	public ResponseEntity<Cliente> create(@RequestBody Cliente cliente) {

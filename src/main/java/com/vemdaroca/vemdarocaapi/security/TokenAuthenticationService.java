@@ -28,6 +28,7 @@ public class TokenAuthenticationService {
 				.compact();
 		
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+//		System.out.println(JWT);
 	}
 	
 	static Authentication getAuthentication(HttpServletRequest request) {
@@ -41,6 +42,7 @@ public class TokenAuthenticationService {
 					.getBody()
 					.getSubject();
 			
+			System.out.println(user);
 			if (user != null) {
 				return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
 			}

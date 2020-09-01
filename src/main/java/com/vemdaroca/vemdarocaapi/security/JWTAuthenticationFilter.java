@@ -20,6 +20,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 		
 		Authentication authentication = TokenAuthenticationService
 				.getAuthentication((HttpServletRequest) request);
+		System.out.println(authentication);
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		filterChain.doFilter(request, response);

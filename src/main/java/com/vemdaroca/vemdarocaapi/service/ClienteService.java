@@ -2,11 +2,13 @@ package com.vemdaroca.vemdarocaapi.service;
 
 import java.util.List;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
+import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
 
 @Component(value = "clienteService")
 public class ClienteService {
@@ -30,8 +32,20 @@ public class ClienteService {
 		return clienteRepository.findByName(nome);
 	}
 
+	public Cliente getByUserName(String username) {
+		return clienteRepository.findByUserName(username).get();
+	}
+
 	public Cliente create(Cliente cliente) {
-		return clienteRepository.save(cliente);
+		Cliente clienteDTO = new Cliente();
+		clienteDTO = cliente;
+		String passwordDecode = new String(Base64.decodeBase64(cliente.getPassword()));
+		String salt = PasswordUtils.getSalt(30);
+		String securePassword = PasswordUtils.generateSecurePassword(passwordDecode, salt);
+		clienteDTO.setPassword(securePassword);
+		clienteDTO.setSalt(salt);
+
+		return clienteRepository.save(clienteDTO);
 	}
 
 	public Cliente delete(Long id) {
