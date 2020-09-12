@@ -70,8 +70,8 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "SALT", length = 100)
-	private String salt;
+//	@Column(name = "SALT", length = 100)
+//	private String salt;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
@@ -82,7 +82,7 @@ public class Cliente implements UserDetails, Serializable {
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
 			String uf, String cep, String bairro, String referencia, String email, char status, String username,
-			String password, String salt) {
+			String password) {
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
@@ -98,7 +98,7 @@ public class Cliente implements UserDetails, Serializable {
 		this.status = status;
 		this.username = username;
 		this.password = password;
-		this.salt = salt;
+//		this.salt = salt;
 	}
 
 	public Long getId() {
@@ -221,13 +221,13 @@ public class Cliente implements UserDetails, Serializable {
 		this.password = password;
 	}
 
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+//	public String getSalt() {
+//		return salt;
+//	}
+//
+//	public void setSalt(String salt) {
+//		this.salt = salt;
+//	}
 
 	public List<Pedido> getPedidos() {
 		return pedidos;

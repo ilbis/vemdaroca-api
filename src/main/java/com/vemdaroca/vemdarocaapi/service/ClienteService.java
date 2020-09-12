@@ -4,8 +4,10 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.vemdaroca.vemdarocaapi.config.ConfigConstants;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
@@ -37,11 +39,9 @@ public class ClienteService {
 	}
 
 	public Cliente create(Cliente cliente) {
-//		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());
-//		String passwordNew = new String(decodedBytes);
-//		String salt = PasswordUtils.getSalt(30);
-//		cliente.setSalt(salt);
-//		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, salt));
+		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());
+		String passwordNew = new String(decodedBytes);
+		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
 		return clienteRepository.save(cliente);
 	}
 
@@ -72,6 +72,6 @@ public class ClienteService {
 		entity.setStatus(cliente.getStatus());
 		entity.setUsername(cliente.getUsername());
 		entity.setPassword(cliente.getPassword());
-		entity.setSalt(cliente.getSalt());
+//		entity.setSalt(cliente.getSalt());
 	}
 }

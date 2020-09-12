@@ -54,23 +54,22 @@ public class TestConfig implements CommandLineRunner {
 			System.out.println("Provided password is incorrect");
 		}
 
-		
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
-		
+
 		produtoRepository.saveAll(Arrays.asList(pr1));
 
 		Cliente cl1 = new Cliente(null, "Ana", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword);
 
 		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "beatriz", mySecurePassword, salt);
-		
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "beatriz", mySecurePassword);
+
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
 
 		Pedido pe2 = new Pedido(null, Instant.now(), 'A', cl1);
 
 		Pedido pe3 = new Pedido(null, Instant.now(), 'A', cl1);
-		
+
 		clienteRepository.saveAll(Arrays.asList(cl1, cl2));
 
 		pedidoRepository.saveAll(Arrays.asList(pe1, pe2, pe3));
