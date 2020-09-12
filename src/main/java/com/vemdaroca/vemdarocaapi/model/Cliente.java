@@ -2,6 +2,7 @@ package com.vemdaroca.vemdarocaapi.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,11 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CLIENTE")
-public class Cliente implements Serializable {
+public class Cliente implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +37,7 @@ public class Cliente implements Serializable {
 	@Column(name = "RUA", length = 100)
 	private String rua;
 
-	@Column(name = "NUMERO",length = 10)
+	@Column(name = "NUMERO", length = 10)
 	private String numero;
 
 	@Column(name = "BLOCOAP", length = 10)
@@ -60,7 +64,7 @@ public class Cliente implements Serializable {
 	@Column(name = "STATUS")
 	private char status;
 
-	@Column(name = "USERNAME", length = 20)
+	@Column(name = "USERNAME", unique = true, length = 20)
 	private String username;
 
 	@Column(name = "PASSWORD", length = 100)
@@ -251,6 +255,36 @@ public class Cliente implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
