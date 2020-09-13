@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CLIENTE")
-public class Cliente implements UserDetails, Serializable {
+public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
 
@@ -70,6 +70,13 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
+	@Column(name = "ROLE")
+	private String role;
+
+//	@ManyToMany
+//	@JoinTable(name = "clientes_roles", joinColumns = @JoinColumn(name = "cliente_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nameRole"))
+//	private List<Role> roles;
+
 //	@Column(name = "SALT", length = 100)
 //	private String salt;
 
@@ -82,7 +89,7 @@ public class Cliente implements UserDetails, Serializable {
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
 			String uf, String cep, String bairro, String referencia, String email, char status, String username,
-			String password) {
+			String password, String role) {
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
@@ -99,6 +106,7 @@ public class Cliente implements UserDetails, Serializable {
 		this.username = username;
 		this.password = password;
 //		this.salt = salt;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -233,6 +241,22 @@ public class Cliente implements UserDetails, Serializable {
 		return pedidos;
 	}
 
+//	public List<Role> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(List<Role> roles) {
+//		this.roles = roles;
+//	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -260,8 +284,9 @@ public class Cliente implements UserDetails, Serializable {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Role> role = new ArrayList<Role>();
+		role.add(new Role(this.role));
+		return role;
 	}
 
 	@Override
@@ -286,6 +311,11 @@ public class Cliente implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public String getAuthority() {
+		return this.role;
 	}
 
 }

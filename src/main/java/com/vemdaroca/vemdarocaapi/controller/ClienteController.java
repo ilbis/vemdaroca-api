@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +57,9 @@ public class ClienteController {
 	@GetMapping(value = "/getByUserName")
 	@ApiOperation(value = "Retorna cliente por username")
 	public ResponseEntity<Cliente> getByUserName(@RequestParam(value = "username", required = false) String username) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getAuthorities().toString();
+		System.out.println(currentPrincipalName);
 		return ResponseEntity.ok().body(clienteService.getByUserName(username));
 	}
 

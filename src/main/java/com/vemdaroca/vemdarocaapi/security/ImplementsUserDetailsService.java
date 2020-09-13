@@ -1,6 +1,12 @@
 package com.vemdaroca.vemdarocaapi.security;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +16,7 @@ import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
 
 @Repository
+@Transactional
 public class ImplementsUserDetailsService implements UserDetailsService {
 
 	@Autowired
@@ -22,8 +29,7 @@ public class ImplementsUserDetailsService implements UserDetailsService {
 		if (cliente == null) {
 			throw new UsernameNotFoundException("Usuario nao encontrado");
 		}
-
-		return cliente;
+		return new User(cliente.getUsername(), cliente.getPassword(), true, true, true, true, cliente.getAuthorities());
 	}
 
 }
