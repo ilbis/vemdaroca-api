@@ -79,5 +79,6 @@ public class TestConfig implements CommandLineRunner {
 
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
+		
 	}
 }
