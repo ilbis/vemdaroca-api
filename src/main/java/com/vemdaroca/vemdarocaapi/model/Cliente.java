@@ -7,9 +7,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CLIENTE")
-public class Cliente implements UserDetails, Serializable, GrantedAuthority {
+public class Cliente implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,12 +77,9 @@ public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 	@Column(name = "ROLE")
 	private String role;
 
-//	@ManyToMany
-//	@JoinTable(name = "clientes_roles", joinColumns = @JoinColumn(name = "cliente_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nameRole"))
-//	private List<Role> roles;
-
-//	@Column(name = "SALT", length = 100)
-//	private String salt;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "clientes_roles", joinColumns = @JoinColumn(name = "cliente_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nameRole"))
+	private List<Role> roles;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
@@ -105,7 +106,6 @@ public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 		this.status = status;
 		this.username = username;
 		this.password = password;
-//		this.salt = salt;
 		this.role = role;
 	}
 
@@ -229,32 +229,16 @@ public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 		this.password = password;
 	}
 
-//	public String getSalt() {
-//		return salt;
-//	}
-//
-//	public void setSalt(String salt) {
-//		this.salt = salt;
-//	}
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
-//	public List<Role> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(List<Role> roles) {
-//		this.roles = roles;
-//	}
-
-	public String getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
@@ -287,6 +271,7 @@ public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 		Collection<Role> role = new ArrayList<Role>();
 		role.add(new Role(this.role));
 		return role;
+//		return (Collection<? extends GrantedAuthority>) this.roles;
 	}
 
 	@Override
@@ -311,11 +296,6 @@ public class Cliente implements UserDetails, Serializable, GrantedAuthority {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
-	}
-
-	@Override
-	public String getAuthority() {
-		return this.role;
 	}
 
 }

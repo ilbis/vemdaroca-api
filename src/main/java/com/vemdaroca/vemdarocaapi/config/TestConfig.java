@@ -13,11 +13,13 @@ import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.model.Produto;
+import com.vemdaroca.vemdarocaapi.model.Role;
 import com.vemdaroca.vemdarocaapi.model.UnidMedida;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.ProdutoRepository;
+import com.vemdaroca.vemdarocaapi.repository.RoleRepository;
 import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
 
 @Configuration
@@ -35,7 +37,7 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
-
+	
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -59,6 +61,10 @@ public class TestConfig implements CommandLineRunner {
 //			System.out.println("Provided password is incorrect");
 //		}
 
+//		Role ro1 = new Role("ROLE_ADMIN");
+//		
+//		roleRepository.saveAll(Arrays.asList(ro1));
+		
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
 
 		produtoRepository.saveAll(Arrays.asList(pr1));
@@ -67,7 +73,7 @@ public class TestConfig implements CommandLineRunner {
 				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, "ROLE_USER");
 
 		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "junior_9119", mySecurePassword, "ADMIN");
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "junior_9119", mySecurePassword, "ROLE_ADMIN");
 
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
 

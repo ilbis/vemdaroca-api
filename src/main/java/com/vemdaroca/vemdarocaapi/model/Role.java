@@ -8,18 +8,17 @@ import org.springframework.security.core.GrantedAuthority;
 @Entity
 public class Role implements GrantedAuthority {
 
+	private static final long serialVersionUID = 1L;
+
+	public Role() {
+	}
+
 	@Id
 	private String nameRole;
-//
-//	@ManyToMany(mappedBy = "roles")
-//	private List<Cliente> clientes;
 
 	@Override
 	public String getAuthority() {
 		return this.nameRole;
-	}
-
-	public Role() {
 	}
 
 	public Role(String nameRole) {

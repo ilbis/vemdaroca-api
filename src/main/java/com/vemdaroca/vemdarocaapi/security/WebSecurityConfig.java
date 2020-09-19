@@ -22,9 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.headers().frameOptions().disable().and().csrf().disable().authorizeRequests()
+		httpSecurity.csrf().disable().authorizeRequests()
 				.antMatchers(AUTH_WHITELIST).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-//				.antMatchers(HttpMethod.POST,"/cliente").hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST,"/cliente").hasRole("ADMIN")
 				.anyRequest()
 				.authenticated().and()
 
