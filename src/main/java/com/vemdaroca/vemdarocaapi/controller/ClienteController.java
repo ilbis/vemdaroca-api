@@ -58,6 +58,9 @@ public class ClienteController {
 	@GetMapping(value = "/getByUserName")
 	@ApiOperation(value = "Retorna cliente por username")
 	public ResponseEntity<Cliente> getByUserName(@RequestParam(value = "username", required = false) String username) {
+		
+		Authentication x = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(x.getAuthorities());
 		return ResponseEntity.ok().body(clienteService.getByUserName(username));
 	}
 

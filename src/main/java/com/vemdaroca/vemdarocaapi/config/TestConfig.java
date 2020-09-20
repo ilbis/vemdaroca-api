@@ -19,7 +19,6 @@ import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.ProdutoRepository;
-import com.vemdaroca.vemdarocaapi.repository.RoleRepository;
 import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
 
 @Configuration
@@ -38,9 +37,6 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	@Autowired
-	private RoleRepository roleRepository;
-	
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -49,35 +45,17 @@ public class TestConfig implements CommandLineRunner {
 		String passwordNew = new String(decodedBytes);
 		String mySecurePassword = PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT);
 		
-//		String salt = PasswordUtils.getSalt(30);
-//		String mySecurePassword = PasswordUtils.generateSecurePassword(myPassword, salt);
-//		System.out.println("My secure password = " + mySecurePassword);
-//		System.out.println("Salt value = " + salt);
-//
-//		String providedPassword = "teste123";
-//
-//		boolean passwordMatch = PasswordUtils.verifyUserPassword(providedPassword, mySecurePassword, salt);
-//
-//		if (passwordMatch) {
-//			System.out.println("Provided user password " + providedPassword + " is correct.");
-//		} else {
-//			System.out.println("Provided password is incorrect");
-//		}
-
-		Role ro1 = new Role("ROLE_ADMIN");
-		Role ro2 = new Role("ROLE_USER");
-		
-		roleRepository.saveAll(Arrays.asList(ro1,ro2));
-		
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
+		
+		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
 
 		produtoRepository.saveAll(Arrays.asList(pr1));
-
+		
 		Cliente cl1 = new Cliente(null, "Ana", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, "ROLE_USER");
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, Role.ROLE_ADMIN);
 
 		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "junior_9119", mySecurePassword, "ROLE_ADMIN");
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "junior_9119", mySecurePassword, Role.ROLE_ADMIN);
 
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
 

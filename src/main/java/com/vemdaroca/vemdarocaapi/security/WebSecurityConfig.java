@@ -22,11 +22,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/h2-console/**" };
 
+	private static final String[] ADMIN_ACCESS = {
+			"/cliente",
+			"/cliente/**",
+			"/pedido",
+			"/pedido/**",
+			"/produto",
+			"/produto/**",
+			"/itempedido",
+			"/itempedido/**"
+	};
+	
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().authorizeRequests()
 				.antMatchers(AUTH_WHITELIST).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.GET,"/cliente/getByUserName").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET,ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST,ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.PUT,ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE,ADMIN_ACCESS).hasRole("ADMIN")
 				.anyRequest()
 				.authenticated().and()
 

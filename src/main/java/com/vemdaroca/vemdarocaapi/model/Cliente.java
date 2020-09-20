@@ -4,17 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -76,23 +73,20 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "ROLE")
-	private String role;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "clientes_roles", joinColumns = @JoinColumn(name = "cliente_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nameRole"))
-	private List<Role> roles;
+	@JsonIgnore
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
+
 	public Cliente() {
 	}
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
 			String uf, String cep, String bairro, String referencia, String email, char status, String username,
-			String password, String role) {
+			String password, Role role) {
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
@@ -235,12 +229,12 @@ public class Cliente implements UserDetails, Serializable {
 		return pedidos;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override
@@ -271,7 +265,7 @@ public class Cliente implements UserDetails, Serializable {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> role = new ArrayList<>();
-		role.add(new SimpleGrantedAuthority(this.role));
+		role.add(new SimpleGrantedAuthority(this.role.toString()));
 		return role;
 	}
 
