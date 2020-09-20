@@ -1,15 +1,19 @@
 package com.vemdaroca.vemdarocaapi.security;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.vemdaroca.vemdarocaapi.config.ConfigConstants;
-import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 public class AccountCredentials {
 
 	private String username;
 	private String password;
+	private Collection<? extends GrantedAuthority> authorities;
 
 	public AccountCredentials() {
 	}
@@ -32,4 +36,9 @@ public class AccountCredentials {
 		this.password = PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT);
 	}
 
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Collection<GrantedAuthority> role = new ArrayList<>();
+		role.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		return role;
+	}
 }

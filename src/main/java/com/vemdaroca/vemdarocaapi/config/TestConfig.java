@@ -38,6 +38,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -61,9 +64,10 @@ public class TestConfig implements CommandLineRunner {
 //			System.out.println("Provided password is incorrect");
 //		}
 
-//		Role ro1 = new Role("ROLE_ADMIN");
-//		
-//		roleRepository.saveAll(Arrays.asList(ro1));
+		Role ro1 = new Role("ROLE_ADMIN");
+		Role ro2 = new Role("ROLE_USER");
+		
+		roleRepository.saveAll(Arrays.asList(ro1,ro2));
 		
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
 

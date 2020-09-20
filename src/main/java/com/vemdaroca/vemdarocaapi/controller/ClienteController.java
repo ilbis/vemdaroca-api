@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.ui.ModelMap;
 
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
@@ -57,10 +58,6 @@ public class ClienteController {
 	@GetMapping(value = "/getByUserName")
 	@ApiOperation(value = "Retorna cliente por username")
 	public ResponseEntity<Cliente> getByUserName(@RequestParam(value = "username", required = false) String username) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(authentication.toString());
-		System.out.println(authentication.getAuthorities().toString());
-
 		return ResponseEntity.ok().body(clienteService.getByUserName(username));
 	}
 

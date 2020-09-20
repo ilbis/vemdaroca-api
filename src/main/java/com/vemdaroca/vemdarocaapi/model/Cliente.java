@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -84,7 +86,7 @@ public class Cliente implements UserDetails, Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-
+	
 	public Cliente() {
 	}
 
@@ -268,10 +270,9 @@ public class Cliente implements UserDetails, Serializable {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<Role> role = new ArrayList<Role>();
-		role.add(new Role(this.role));
+		Collection<GrantedAuthority> role = new ArrayList<>();
+		role.add(new SimpleGrantedAuthority(this.role));
 		return role;
-//		return (Collection<? extends GrantedAuthority>) this.roles;
 	}
 
 	@Override

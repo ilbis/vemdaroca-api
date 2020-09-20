@@ -7,26 +7,23 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.vemdaroca.vemdarocaapi.model.Cliente;
-import com.vemdaroca.vemdarocaapi.repository.RoleRepository;
-import com.vemdaroca.vemdarocaapi.service.ClienteService;
+import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 
-@Repository
-@Transactional
+@Service("userDetailsService")
 public class ImplementsUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private ClienteService clienteService;
+	private ClienteRepository clienteRepository;
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Cliente cliente = clienteService.getByUserName(username);
-
-		if (cliente == null) {
-			throw new UsernameNotFoundException("Usuario nao encontrado");
-		}
+		Cliente cliente = clienteRepository.findByUserName(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+		
 		return new User(cliente.getUsername(), cliente.getPassword(), true, true, true, true, cliente.getAuthorities());
 	}
 
