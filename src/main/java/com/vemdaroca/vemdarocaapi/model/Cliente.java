@@ -2,21 +2,28 @@ package com.vemdaroca.vemdarocaapi.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CLIENTE")
-public class Cliente implements Serializable {
+public class Cliente implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +40,7 @@ public class Cliente implements Serializable {
 	@Column(name = "RUA", length = 100)
 	private String rua;
 
-	@Column(name = "NUMERO",length = 10)
+	@Column(name = "NUMERO", length = 10)
 	private String numero;
 
 	@Column(name = "BLOCOAP", length = 10)
@@ -60,14 +67,15 @@ public class Cliente implements Serializable {
 	@Column(name = "STATUS")
 	private char status;
 
-	@Column(name = "USERNAME", length = 20)
+	@Column(name = "USERNAME", unique = true, length = 20)
 	private String username;
 
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "SALT", length = 100)
-	private String salt;
+	@JsonIgnore
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
@@ -78,7 +86,7 @@ public class Cliente implements Serializable {
 
 	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
 			String uf, String cep, String bairro, String referencia, String email, char status, String username,
-			String password, String salt) {
+			String password, Role role) {
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
@@ -94,7 +102,7 @@ public class Cliente implements Serializable {
 		this.status = status;
 		this.username = username;
 		this.password = password;
-		this.salt = salt;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -217,16 +225,16 @@ public class Cliente implements Serializable {
 		this.password = password;
 	}
 
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override
@@ -251,6 +259,37 @@ public class Cliente implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Collection<GrantedAuthority> role = new ArrayList<>();
+		role.add(new SimpleGrantedAuthority(this.role.toString()));
+		return role;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 

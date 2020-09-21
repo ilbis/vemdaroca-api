@@ -1,7 +1,6 @@
 package com.vemdaroca.vemdarocaapi.security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,14 +31,14 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 				AccountCredentials.class);
 
 		return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
-				credentials.getUsername(), credentials.getPassword(), Collections.emptyList()));
+				credentials.getUsername(), credentials.getPassword(), credentials.getAuthorities()));
 	}
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain, Authentication auth) throws IOException, ServletException {
 
-		TokenAuthenticationService.addAuthentication(response, auth.getName());
+		TokenAuthenticationService.addAuthentication(response, auth);
 	}
 
 }

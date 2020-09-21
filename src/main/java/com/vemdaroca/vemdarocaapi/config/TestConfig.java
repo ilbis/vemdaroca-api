@@ -2,6 +2,7 @@ package com.vemdaroca.vemdarocaapi.config;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,7 @@ import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.model.Produto;
+import com.vemdaroca.vemdarocaapi.model.Role;
 import com.vemdaroca.vemdarocaapi.model.UnidMedida;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
@@ -34,43 +36,33 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
-
+	
 	@Override
 	public void run(String... args) throws Exception {
 
-		String myPassword = "teste123";
-		String salt = PasswordUtils.getSalt(30);
-		String mySecurePassword = PasswordUtils.generateSecurePassword(myPassword, salt);
-		System.out.println("My secure password = " + mySecurePassword);
-		System.out.println("Salt value = " + salt);
-
-		String providedPassword = "teste123";
-
-		boolean passwordMatch = PasswordUtils.verifyUserPassword(providedPassword, mySecurePassword, salt);
-
-		if (passwordMatch) {
-			System.out.println("Provided user password " + providedPassword + " is correct.");
-		} else {
-			System.out.println("Provided password is incorrect");
-		}
-
+		String myPassword = "SnIwMjAyMTk5Mw==";
+		byte[] decodedBytes = Base64.getDecoder().decode(myPassword);
+		String passwordNew = new String(decodedBytes);
+		String mySecurePassword = PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT);
 		
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
 		
-		produtoRepository.saveAll(Arrays.asList(pr1));
+		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
 
+		produtoRepository.saveAll(Arrays.asList(pr1));
+		
 		Cliente cl1 = new Cliente(null, "Ana", "18-98282-1212", "Rua Saracura", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, Role.ROLE_ADMIN);
 
 		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "", "", "SP", "01111-111",
-				"Cidade Dutra", "", "ana@gmail.com", 'A', "ana", mySecurePassword, salt);
-		
+				"Cidade Dutra", "", "ana@gmail.com", 'A', "junior_9119", mySecurePassword, Role.ROLE_ADMIN);
+
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
 
 		Pedido pe2 = new Pedido(null, Instant.now(), 'A', cl1);
 
 		Pedido pe3 = new Pedido(null, Instant.now(), 'A', cl1);
-		
+
 		clienteRepository.saveAll(Arrays.asList(cl1, cl2));
 
 		pedidoRepository.saveAll(Arrays.asList(pe1, pe2, pe3));
