@@ -73,7 +73,6 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
