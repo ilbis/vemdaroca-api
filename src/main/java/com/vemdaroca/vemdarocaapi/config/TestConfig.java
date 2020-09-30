@@ -69,6 +69,7 @@ public class TestConfig implements CommandLineRunner {
 
 		ItemPedido it1 = new ItemPedido(pe1, pr1, 10.00, pr1.getValor(), 'A');
 
+		
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
 		
