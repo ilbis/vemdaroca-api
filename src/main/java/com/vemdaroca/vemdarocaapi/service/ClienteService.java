@@ -62,16 +62,15 @@ public class ClienteService {
 		entity.setTel(cliente.getTel());
 		entity.setRua(cliente.getRua());
 		entity.setNumero(cliente.getNumero());
-		entity.setBlocoAp(cliente.getBlocoAp());
 		entity.setComplemento(cliente.getComplemento());
+		entity.setCidade(cliente.getCidade());
 		entity.setUf(cliente.getUf());
 		entity.setCep(cliente.getCep());
 		entity.setBairro(cliente.getBairro());
-		entity.setReferencia(cliente.getReferencia());
 		entity.setEmail(cliente.getEmail());
 		entity.setStatus(cliente.getStatus());
 		entity.setUsername(cliente.getUsername());
 		entity.setPassword(cliente.getPassword());
-//		entity.setSalt(cliente.getSalt());
+		entity.setValidatorCode(cliente.getValidatorCode());
 	}
 }

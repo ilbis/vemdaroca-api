@@ -40,21 +40,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(AUTH_WHITELIST).permitAll()
+				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				.antMatchers(HttpMethod.GET,ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST,ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.PUT,ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.DELETE,ADMIN_ACCESS).hasRole("ADMIN")
+				.and()
+				.authorizeRequests()
 				.anyRequest()
-				.authenticated().and()
+				.authenticated()
+				.and()
 
 				// filtra requisições de login
 				
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
 
-				// filtra outras requisições para verificar a presença do JWT no header
+//				// filtra outras requisições para verificar a presença do JWT no header
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 	}
 
 	@Override

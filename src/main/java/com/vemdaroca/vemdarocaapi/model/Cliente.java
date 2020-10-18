@@ -43,11 +43,11 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "NUMERO", length = 10)
 	private String numero;
 
-	@Column(name = "BLOCOAP", length = 10)
-	private String blocoAp;
-
 	@Column(name = "COMPLEMENTO", length = 50)
 	private String complemento;
+
+	@Column(name = "CIDADE", length = 30)
+	private String cidade;
 
 	@Column(name = "UF", length = 2)
 	private String uf;
@@ -57,9 +57,6 @@ public class Cliente implements UserDetails, Serializable {
 
 	@Column(name = "BAIRRO", length = 30)
 	private String bairro;
-
-	@Column(name = "REFERENCIA", length = 50)
-	private String referencia;
 
 	@Column(name = "EMAIL", length = 50)
 	private String email;
@@ -73,6 +70,9 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
+	@Column(name = "VALIDATORCODE", length = 4)
+	private String validatorCode;
+
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
@@ -83,24 +83,24 @@ public class Cliente implements UserDetails, Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nome, String tel, String rua, String numero, String blocoAp, String complemento,
-			String uf, String cep, String bairro, String referencia, String email, char status, String username,
-			String password, Role role) {
+	public Cliente(Long id, String nome, String tel, String rua, String numero, String complemento, String cidade,
+			String uf, String cep, String bairro, String email, char status, String username, String password,
+			String validatorCode, Role role) {
 		this.id = id;
 		this.nome = nome;
 		this.tel = tel;
 		this.rua = rua;
 		this.numero = numero;
-		this.blocoAp = blocoAp;
 		this.complemento = complemento;
+		this.cidade = cidade;
 		this.uf = uf;
 		this.cep = cep;
 		this.bairro = bairro;
-		this.referencia = referencia;
 		this.email = email;
 		this.status = status;
 		this.username = username;
 		this.password = password;
+		this.validatorCode = validatorCode;
 		this.role = role;
 	}
 
@@ -144,14 +144,6 @@ public class Cliente implements UserDetails, Serializable {
 		this.numero = numero;
 	}
 
-	public String getBlocoAp() {
-		return blocoAp;
-	}
-
-	public void setBlocoAp(String blocoAp) {
-		this.blocoAp = blocoAp;
-	}
-
 	public String getComplemento() {
 		return complemento;
 	}
@@ -184,14 +176,6 @@ public class Cliente implements UserDetails, Serializable {
 		this.bairro = bairro;
 	}
 
-	public String getReferencia() {
-		return referencia;
-	}
-
-	public void setReferencia(String referencia) {
-		this.referencia = referencia;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -222,6 +206,22 @@ public class Cliente implements UserDetails, Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getValidatorCode() {
+		return validatorCode;
+	}
+
+	public void setValidatorCode(String validatorCode) {
+		this.validatorCode = validatorCode;
 	}
 
 	public List<Pedido> getPedidos() {
