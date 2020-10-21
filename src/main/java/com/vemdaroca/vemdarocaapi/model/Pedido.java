@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
 
 @Entity
 @Table(name = "PEDIDO")
@@ -70,8 +71,8 @@ public class Pedido implements Serializable {
 		this.moment = moment;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public ClienteResponseDTO getCliente() {
+		return ClienteResponseDTO.toDTO(cliente);
 	}
 
 	public void setCliente(Cliente cliente) {
