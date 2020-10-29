@@ -42,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers(AUTH_WHITELIST).permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/cliente").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				.antMatchers(HttpMethod.GET,ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST,ADMIN_ACCESS).hasRole("ADMIN")
@@ -72,8 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring().antMatchers(HttpMethod.POST,"/cliente")
-	    .antMatchers(HttpMethod.OPTIONS,"/cliente");
+	    web.ignoring()
+	    .antMatchers(HttpMethod.POST,"/cliente")
+	    .antMatchers("/h2-console/**");
 	}
 	
 
