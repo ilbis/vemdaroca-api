@@ -28,66 +28,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/h2-console/**" };
 
-	private static final String[] ADMIN_ACCESS = {
-			"/pedido",
-			"/pedido/**",
-			"/produto",
-			"/produto/**",
-			"/itempedido",
-			"/itempedido/**"
-	};
-	
-	
+	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
+			"/itempedido/**" };
+
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).permitAll()
-				.antMatchers(HttpMethod.POST, "/cliente").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/cliente").permitAll()
-				.antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.GET,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.POST,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.PUT,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE,ADMIN_ACCESS).hasRole("ADMIN")
-				.and()
-				.authorizeRequests()
-				.anyRequest()
-				.authenticated()
-				.and()
+		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
+				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.POST, ADMIN_ACCESS)
+				.hasRole("ADMIN").antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, ADMIN_ACCESS).hasRole("ADMIN").and().authorizeRequests().anyRequest()
+				.authenticated().and()
 
 				// filtra requisições de login
-			
+
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
 
 				// filtra outras requisições para verificar a presença do JWT no header
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		
+
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// cria uma conta default
 		auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
-		
+
 	}
-	
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring()
-	    .antMatchers(HttpMethod.POST,"/cliente")
-	    .antMatchers("/h2-console/**");
-	}
-	
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente")
+		.antMatchers("/h2-console/**");
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-   }
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("https://vemdaroca.herokuapp.com","http://localhost:4200"));
+		configuration.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+				"Access-Control-Request-Method", "Access-Control-Request-Headers", "Origin", "Cache-Control",
+				"Content-Type"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
