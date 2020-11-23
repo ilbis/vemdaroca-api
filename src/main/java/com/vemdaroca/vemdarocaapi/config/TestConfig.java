@@ -36,7 +36,7 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
-	
+
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -44,18 +44,23 @@ public class TestConfig implements CommandLineRunner {
 		byte[] decodedBytes = Base64.getDecoder().decode(myPassword);
 		String passwordNew = new String(decodedBytes);
 		String mySecurePassword = PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT);
-		
+
 		Produto pr1 = new Produto(null, "Alface", "Verdura", 2.00, UnidMedida.UNIDADE, 'A');
-		
+		Produto pr2 = new Produto(null, "Maçã", "Fruta", 10.00, UnidMedida.KILO, 'A');
+		Produto pr3 = new Produto(null, "Melancia", "Fruta", 15.00, UnidMedida.UNIDADE, 'A');
+		Produto pr4 = new Produto(null, "Chuchu", "Legumes", 3.00, UnidMedida.KILO, 'A');
+		Produto pr5 = new Produto(null, "Suco de Frutas", "Suco", 10.00, UnidMedida.LITRO, 'A');
+
 		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
 
-		produtoRepository.saveAll(Arrays.asList(pr1));
-		
-		Cliente cl1 = new Cliente(null, "Jorge", "18-98282-1212", "Rua Saracura", "11", "Rua 1", "Sao Paulo", "SP", "01111-111",
-				"Cidade Dutra", "jorge@gmail.com", 'A', "jorge_admin", "Vhh8pw1Szp6MRdk1mTHaCtjlMCiP7kkpS7m/gS+2ZSU=", "1234", Role.ROLE_ADMIN);
+		produtoRepository.saveAll(Arrays.asList(pr1, pr2, pr3, pr4, pr5));
 
-		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "Rua 2", "Sao Paulo", "SP", "01111-111",
-				"Cidade Dutra", "ana@gmail.com", 'A', "ilbis", mySecurePassword, "1234", Role.ROLE_ADMIN);
+		Cliente cl1 = new Cliente(null, "Jorge", "18-98282-1212", "Rua Saracura", "11", "Rua 1", "Sao Paulo", "SP",
+				"01111-111", "Cidade Dutra", "jorge@gmail.com", 'A', "jorge_admin",
+				"Vhh8pw1Szp6MRdk1mTHaCtjlMCiP7kkpS7m/gS+2ZSU=", "1234", Role.ROLE_ADMIN);
+
+		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "Rua 2", "Sao Paulo", "SP",
+				"01111-111", "Cidade Dutra", "ana@gmail.com", 'A', "ilbis", mySecurePassword, "1234", Role.ROLE_ADMIN);
 
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
 
@@ -71,6 +76,5 @@ public class TestConfig implements CommandLineRunner {
 
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
-		
 	}
 }
