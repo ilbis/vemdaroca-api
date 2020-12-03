@@ -50,10 +50,17 @@ public class TestConfig implements CommandLineRunner {
 		Produto pr3 = new Produto(null, "Melancia", "Fruta", 15.00, UnidMedida.UNIDADE, 'A');
 		Produto pr4 = new Produto(null, "Chuchu", "Legumes", 3.00, UnidMedida.KILO, 'A');
 		Produto pr5 = new Produto(null, "Suco de Frutas", "Suco", 10.00, UnidMedida.LITRO, 'A');
+		Produto pr6 = new Produto(null, "Mamão", "Fruta", 5.00, UnidMedida.KILO, 'A');
+		Produto pr7 = new Produto(null, "Pimentão", "Legumes", 11.00, UnidMedida.KILO, 'A');
+		Produto pr8 = new Produto(null, "Abobrinha", "Legumes", 2.50, UnidMedida.KILO, 'A');
+		Produto pr9 = new Produto(null, "Pera", "Fruta", 9.99, UnidMedida.KILO, 'A');
+		Produto pr10 = new Produto(null, "Limão", "Fruta", 5.40, UnidMedida.KILO, 'A');
+		Produto pr11 = new Produto(null, "Jaca", "Fruta", 12.80, UnidMedida.UNIDADE, 'A');
+		Produto pr12 = new Produto(null, "Pepino", "Verdura", 3.50, UnidMedida.KILO, 'A');
 
 		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
 
-		produtoRepository.saveAll(Arrays.asList(pr1, pr2, pr3, pr4, pr5));
+		produtoRepository.saveAll(Arrays.asList(pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8, pr9, pr10, pr11, pr12));
 
 		Cliente cl1 = new Cliente(null, "Jorge", "18-98282-1212", "Rua Saracura", "11", "Rua 1", "Sao Paulo", "SP",
 				"01111-111", "Cidade Dutra", "jorge@gmail.com", 'A', "jorge_admin",
