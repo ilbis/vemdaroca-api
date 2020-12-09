@@ -20,6 +20,7 @@ import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.ProdutoRepository;
 import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
+import com.vemdaroca.vemdarocaapi.service.EmailService;
 
 @Configuration
 @Profile("local")
@@ -37,9 +38,15 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private EmailService emailService;
+
 	@Override
 	public void run(String... args) throws Exception {
 
+		System.out.println("Enviando email");
+//		emailService.sendMail("ilbis.candido@gmail.com", "Test subject", "Test mail");
+		
 		String myPassword = "SnIwMjAyMTk5Mw==";
 		byte[] decodedBytes = Base64.getDecoder().decode(myPassword);
 		String passwordNew = new String(decodedBytes);
