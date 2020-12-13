@@ -11,6 +11,8 @@ import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
 @Component(value = "itemService")
 public class ItemPedidoService {
 
+	String texto = "";
+
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
 
@@ -30,6 +32,10 @@ public class ItemPedidoService {
 		return itemPedidoRepository.save(itemPedido);
 	}
 
+	public List<ItemPedido> createAll(List<ItemPedido> itemPedido) {
+		return itemPedidoRepository.saveAll(itemPedido);
+	}
+
 	public ItemPedido delete(Long id) {
 		ItemPedido entity = itemPedidoRepository.findById(id).get();
 		entity.setStatus('I');
@@ -46,5 +52,15 @@ public class ItemPedidoService {
 		entity.setQtd(itemPedido.getQtd());
 		entity.setStatus(itemPedido.getStatus());
 		entity.setValor(itemPedido.getValor());
+	}
+
+	public String formatedPedidoEmail(List<ItemPedido> itemPedido) {
+		texto = "";
+
+		itemPedido.forEach(item -> {
+			
+			texto += item.getProduto().toString() + item.toString();
+		});
+		return texto;
 	}
 }

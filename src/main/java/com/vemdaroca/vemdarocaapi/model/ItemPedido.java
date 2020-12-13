@@ -119,4 +119,10 @@ public class ItemPedido implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ItemPedido [qtd=" + qtd + ", valor=" + valor + "]";
+	}
+
+	
 }

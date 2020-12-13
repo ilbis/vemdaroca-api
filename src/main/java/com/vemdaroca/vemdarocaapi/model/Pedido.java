@@ -124,4 +124,12 @@ public class Pedido implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", moment=" + moment + ", status=" + status + ", cliente=" + cliente + ", items="
+				+ items + "]";
+	}
+	
+
+
 }

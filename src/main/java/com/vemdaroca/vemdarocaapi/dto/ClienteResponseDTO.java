@@ -31,4 +31,13 @@ public class ClienteResponseDTO {
 				cliente.getNumero(), cliente.getComplemento(),cliente.getCidade(),cliente.getUf(),cliente.getCep(),cliente.getBairro(),
 				cliente.getEmail(),cliente.getStatus(),cliente.getUsername(),cliente.getRole());
 	}
+
+	@Override
+	public String toString() {
+		return "ClienteResponseDTO [nome=" + nome + ", tel=" + tel + ", rua=" + rua + ", numero=" + numero
+				+ ", complemento=" + complemento + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep + ", bairro="
+				+ bairro + ", email=" + email + ", status=" + status + "]";
+	}
+	
+	
 }

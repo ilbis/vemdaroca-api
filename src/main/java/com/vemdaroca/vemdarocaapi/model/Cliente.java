@@ -292,4 +292,11 @@ public class Cliente implements UserDetails, Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente [nome=" + nome + ", tel=" + tel + ", rua=" + rua + ", numero=" + numero + ", complemento="
+				+ complemento + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep + ", bairro=" + bairro + ", email="
+				+ email + "]";
+	}
+
 }

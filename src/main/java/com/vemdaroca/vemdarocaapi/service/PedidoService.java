@@ -1,10 +1,12 @@
 package com.vemdaroca.vemdarocaapi.service;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 
@@ -31,6 +33,8 @@ public class PedidoService {
 	}
 
 	public Pedido create(Pedido pedido) {
+		pedido.setMoment(Instant.now());
+		pedido.setStatus('A');
 		return pedidoRepository.save(pedido);
 	}
 
@@ -39,14 +43,15 @@ public class PedidoService {
 		entity.setStatus('I');
 		return pedidoRepository.save(entity);
 	}
-	
+
 	public Pedido update(Long id, Pedido pedido) {
 		Pedido entity = pedidoRepository.findById(id).get();
 		updateData(entity, pedido);
 		return pedidoRepository.save(entity);
 	}
-	
+
 	private void updateData(Pedido entity, Pedido pedido) {
 		entity.setStatus(pedido.getStatus());
 	}
+
 }

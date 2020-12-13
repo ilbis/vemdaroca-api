@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
+import com.vemdaroca.vemdarocaapi.service.EmailService;
 import com.vemdaroca.vemdarocaapi.service.ItemPedidoService;
 
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,9 @@ public class ItemPedidoController {
 
 	@Autowired
 	private ItemPedidoService itemPedidoService;
+
+	@Autowired
+	private EmailService emailService;
 
 	@GetMapping(value = "allActive")
 	@ApiOperation(value = "Retorna todos itens de pedido ativos")
@@ -52,6 +56,21 @@ public class ItemPedidoController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemPedido.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(itemPedido);
+	}
+
+	@PostMapping(value = "/createAll")
+	@ApiOperation(value = "Criar uma lista de item de pedido")
+	public ResponseEntity<List<ItemPedido>> createAll(@RequestBody List<ItemPedido> itemPedido) throws Exception {
+		itemPedido = itemPedidoService.createAll(itemPedido);
+
+		try {
+			emailService.sendMail("trbbrazil@gmail.com", "VEM DA ROÇA - PEDIDO",
+					itemPedidoService.formatedPedidoEmail(itemPedido));
+		} catch (Exception e) {
+			System.out.println("Erro ao enviar email: " + e);
+			throw new Exception(e);
+		}
+		return ResponseEntity.created(null).body(itemPedido);
 	}
 
 	@DeleteMapping(value = "/{id}")

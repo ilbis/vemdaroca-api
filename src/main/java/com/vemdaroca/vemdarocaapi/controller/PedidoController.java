@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.service.PedidoService;
 
@@ -56,6 +59,14 @@ public class PedidoController {
 	@PostMapping
 	@ApiOperation(value = "Criar um pedido")
 	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido) {
+		
+		Authentication x = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("ID: " + x.getPrincipal());
+		
+		Cliente cliente = new Cliente();
+		cliente.setId(Long.parseLong(x.getPrincipal().toString()));
+		pedido.setCliente(cliente);
+		
 		pedido = pedidoService.create(pedido);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
 		return ResponseEntity.created(uri).body(pedido);
