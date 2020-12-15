@@ -63,13 +63,13 @@ public class ItemPedidoController {
 	public ResponseEntity<List<ItemPedido>> createAll(@RequestBody List<ItemPedido> itemPedido) throws Exception {
 		itemPedido = itemPedidoService.createAll(itemPedido);
 
-		try {
-			emailService.sendMail("trbbrazil@gmail.com", "VEM DA ROÇA - PEDIDO",
-					itemPedidoService.formatedPedidoEmail(itemPedido));
-		} catch (Exception e) {
-			System.out.println("Erro ao enviar email: " + e);
-			throw new Exception(e);
-		}
+//		try {
+//			emailService.sendMail("trbbrazil@gmail.com", "VEM DA ROÇA - PEDIDO",
+//					itemPedidoService.formatedPedidoEmail(itemPedido));
+//		} catch (Exception e) {
+//			System.out.println("Erro ao enviar email: " + e);
+//			throw new Exception(e);
+//		}
 		return ResponseEntity.created(null).body(itemPedido);
 	}
 
