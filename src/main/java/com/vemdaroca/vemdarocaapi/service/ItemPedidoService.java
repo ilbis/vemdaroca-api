@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
+import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 
 @Component(value = "itemService")
 public class ItemPedidoService {
@@ -15,6 +16,9 @@ public class ItemPedidoService {
 
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
+
+	@Autowired
+	PedidoRepository pedidoRepository;
 
 	public List<ItemPedido> getAllActive() {
 		return itemPedidoRepository.findAllStatusActive();
@@ -33,6 +37,7 @@ public class ItemPedidoService {
 	}
 
 	public List<ItemPedido> createAll(List<ItemPedido> itemPedido) {
+//		pedidoRepository.create();
 		return itemPedidoRepository.saveAll(itemPedido);
 	}
 
@@ -58,7 +63,7 @@ public class ItemPedidoService {
 		texto = "";
 
 		itemPedido.forEach(item -> {
-			
+
 			texto += item.getProduto().toString() + item.toString();
 		});
 		return texto;

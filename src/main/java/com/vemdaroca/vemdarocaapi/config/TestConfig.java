@@ -73,11 +73,11 @@ public class TestConfig implements CommandLineRunner {
 				"01111-111", "Cidade Dutra", "jorge@gmail.com", 'A', "jorge_admin",
 				"Vhh8pw1Szp6MRdk1mTHaCtjlMCiP7kkpS7m/gS+2ZSU=", "1234", Role.ROLE_ADMIN);
 
-		Cliente cl2 = new Cliente(null, "Beatriz", "18-98282-1212", "Rua Jose maximo", "11", "Rua 2", "Sao Paulo", "SP",
-				"01111-111", "Cidade Dutra", "ana@gmail.com", 'A', "ilbis", mySecurePassword, "1234", Role.ROLE_ADMIN);
+		Cliente cl2 = new Cliente(null, "Ilbis", "11-92290939", "Rua Jose maximo", "11", "Rua 2", "Sao Paulo", "SP",
+				"01111-111", "Cidade Dutra", "ilbis.candido@gmai.com", 'A', "ilbis", mySecurePassword, "1234", Role.ROLE_ADMIN);
 
 		Pedido pe1 = new Pedido(null, Instant.now(), 'A', cl2);
-
+		
 		Pedido pe2 = new Pedido(null, Instant.now(), 'A', cl1);
 
 		Pedido pe3 = new Pedido(null, Instant.now(), 'A', cl1);
