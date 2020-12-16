@@ -1,11 +1,17 @@
 package com.vemdaroca.vemdarocaapi.service;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
+import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 
@@ -36,8 +42,22 @@ public class ItemPedidoService {
 		return itemPedidoRepository.save(itemPedido);
 	}
 
+	@Transactional
 	public List<ItemPedido> createAll(List<ItemPedido> itemPedido) {
-//		pedidoRepository.create();
+		Authentication x = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("ID: " + x.getPrincipal());
+
+		Cliente cliente = new Cliente();
+		Pedido pedido = new Pedido();
+		cliente.setId(Long.parseLong(x.getPrincipal().toString()));
+		pedido.setCliente(cliente);
+		pedido.setMoment(Instant.now());
+		pedido.setStatus('A');
+		Pedido pedidoResponse = pedidoRepository.save(pedido);
+		itemPedido.forEach(item -> {
+			item.getPedido().setId(pedidoResponse.getId());
+		});
+
 		return itemPedidoRepository.saveAll(itemPedido);
 	}
 

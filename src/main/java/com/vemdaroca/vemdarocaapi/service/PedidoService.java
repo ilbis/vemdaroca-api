@@ -33,8 +33,6 @@ public class PedidoService {
 	}
 
 	public Pedido create(Pedido pedido) {
-		pedido.setMoment(Instant.now());
-		pedido.setStatus('A');
 		return pedidoRepository.save(pedido);
 	}
 
