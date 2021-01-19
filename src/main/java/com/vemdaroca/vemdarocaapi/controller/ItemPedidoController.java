@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
+import com.vemdaroca.vemdarocaapi.model.Pedido;
+import com.vemdaroca.vemdarocaapi.service.ClienteService;
 import com.vemdaroca.vemdarocaapi.service.EmailService;
 import com.vemdaroca.vemdarocaapi.service.ItemPedidoService;
 
@@ -30,6 +36,9 @@ public class ItemPedidoController {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private ClienteService clienteService;
 
 	@GetMapping(value = "allActive")
 	@ApiOperation(value = "Retorna todos itens de pedido ativos")
@@ -60,17 +69,21 @@ public class ItemPedidoController {
 
 	@PostMapping(value = "/createAll")
 	@ApiOperation(value = "Criar uma lista de item de pedido")
-	public ResponseEntity<List<ItemPedido>> createAll(@RequestBody List<ItemPedido> itemPedido) throws Exception {
-		itemPedido = itemPedidoService.createAll(itemPedido);
+	public ResponseEntity<Pedido> createAll(@RequestBody List<ItemPedido> itemPedido) throws Exception {
+		Pedido pedido = itemPedidoService.createAll(itemPedido);
 
-//		try {
-//			emailService.sendMail("trbbrazil@gmail.com", "VEM DA ROÇA - PEDIDO",
-//					itemPedidoService.formatedPedidoEmail(itemPedido));
-//		} catch (Exception e) {
-//			System.out.println("Erro ao enviar email: " + e);
-//			throw new Exception(e);
-//		}
-		return ResponseEntity.created(null).body(itemPedido);
+		try {
+			Authentication x = SecurityContextHolder.getContext().getAuthentication();
+			ClienteResponseDTO cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
+
+			System.out.println("EMAIL: " + cliente.getEmail());
+			emailService.sendMail(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
+					itemPedidoService.formatedPedidoEmail(itemPedido));
+		} catch (Exception e) {
+			System.out.println("Erro ao enviar email: " + e);
+			throw new Exception(e);
+		}
+		return ResponseEntity.created(null).body(pedido);
 	}
 
 	@DeleteMapping(value = "/{id}")

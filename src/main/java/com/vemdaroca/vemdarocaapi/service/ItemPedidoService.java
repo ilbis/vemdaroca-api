@@ -1,6 +1,8 @@
 package com.vemdaroca.vemdarocaapi.service;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,6 @@ import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 
 @Component(value = "itemService")
 public class ItemPedidoService {
-
-	String texto = "";
 
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
@@ -43,7 +43,7 @@ public class ItemPedidoService {
 	}
 
 	@Transactional
-	public List<ItemPedido> createAll(List<ItemPedido> itemPedido) {
+	public Pedido createAll(List<ItemPedido> itemPedido) {
 		Authentication x = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("ID: " + x.getPrincipal());
 
@@ -57,8 +57,8 @@ public class ItemPedidoService {
 		itemPedido.forEach(item -> {
 			item.getPedido().setId(pedidoResponse.getId());
 		});
-
-		return itemPedidoRepository.saveAll(itemPedido);
+		itemPedidoRepository.saveAll(itemPedido);
+		return pedidoResponse;
 	}
 
 	public ItemPedido delete(Long id) {
@@ -80,12 +80,23 @@ public class ItemPedidoService {
 	}
 
 	public String formatedPedidoEmail(List<ItemPedido> itemPedido) {
-		texto = "";
+		StringBuilder returnText = new StringBuilder();
 
+		Pedido pedido = pedidoRepository.findById(itemPedido.get(0).getPedido().getId()).get();
+		Date moment = Date.from(pedido.getMoment());
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		String dataFormatada = formatter.format(moment);
+
+		returnText.append("Agradecemos seu pedido!! =D \n");
+		returnText.append("Seu pedido foi solicitado com sucesso, abaixo está melhor detalhado: \n");
+		returnText.append("Pedido: " + pedido.getId() + "\n");
+		returnText.append("Data do pedido: " + dataFormatada + "\n");
 		itemPedido.forEach(item -> {
-
-			texto += item.getProduto().toString() + item.toString();
+			returnText.append("QTD: " + item.getQtd() + " \t\t Produto: " + item.getProduto().getNome()
+					+ " \t\t\t\t\t Valor Unitário: R$" + item.getValor() + " \t\t\t\t\t SubTotal: R$"
+					+ item.getSubTotal() + "\n");
 		});
-		return texto;
+		returnText.append("Valor Médio Total: R$" + pedido.getTotal());
+		return returnText.toString();
 	}
 }
