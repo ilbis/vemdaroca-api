@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -85,6 +86,7 @@ public class ItemPedidoService {
 		Pedido pedido = pedidoRepository.findById(itemPedido.get(0).getPedido().getId()).get();
 		Date moment = Date.from(pedido.getMoment());
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
 		String dataFormatada = formatter.format(moment);
 
 		returnText.append("Agradecemos seu pedido!! =D \n");

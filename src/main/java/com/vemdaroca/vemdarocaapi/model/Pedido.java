@@ -30,7 +30,7 @@ public class Pedido implements Serializable {
 	private Long id;
 
 	@Column(name = "MOMENT", nullable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT-3:00")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT-3")
 	private Instant moment;
 
 	@Column(name = "STATUS", nullable = false)
