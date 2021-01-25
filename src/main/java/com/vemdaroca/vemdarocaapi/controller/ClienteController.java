@@ -68,7 +68,7 @@ public class ClienteController {
 	@ApiOperation(value = "Criar um cliente")
 	public ResponseEntity<ClienteResponseDTO> create(@RequestBody ClienteDTO dto) {
 		Cliente cliente = dto.toObject();
-		cliente.setStatus('I');
+		cliente.setStatus('A');
 		cliente.setRole(Role.ROLE_USER);
 		ClienteResponseDTO clienteResponse = clienteService.create(cliente);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId())
