@@ -29,13 +29,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
 			"/itempedido/**" };
+	
+	private static final String[] ALL_ACCESS = { "/produto" };
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
 				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
 				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.POST, ADMIN_ACCESS)
+				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, ALL_ACCESS).hasRole("USER")
+				.antMatchers(HttpMethod.POST, ADMIN_ACCESS)
 				.hasRole("ADMIN").antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.DELETE, ADMIN_ACCESS).hasRole("ADMIN").and().authorizeRequests().anyRequest()
 				.authenticated().and()
