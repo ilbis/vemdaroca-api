@@ -27,10 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/h2-console/**" };
 
-	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
-			"/itempedido/**" };
+	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/all", "/itempedido",
+			"/itempedido/all" };
 	
-	private static final String[] ALL_ACCESS = { "/produto/allActive" };
+	private static final String[] USER_GET_ACCESS = { "/produto/allActive" };
+	private static final String[] USER_POST_ACCESS = { "/itempedido/createAll" };
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -38,9 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
 				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
 				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET, ALL_ACCESS).hasRole("USER")
-				.antMatchers(HttpMethod.POST, ADMIN_ACCESS)
-				.hasRole("ADMIN").antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, USER_GET_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST, USER_POST_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.DELETE, ADMIN_ACCESS).hasRole("ADMIN").and().authorizeRequests().anyRequest()
 				.authenticated().and()
 
@@ -95,6 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		config.addAllowedMethod("POST");
 		config.addAllowedMethod("PUT");
 		config.addAllowedMethod("DELETE");
+		config.addExposedHeader("Authorization");
+
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
