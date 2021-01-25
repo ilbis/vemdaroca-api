@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
 			"/itempedido/**" };
 	
-	private static final String[] ALL_ACCESS = { "/produto" };
+	private static final String[] ALL_ACCESS = { "/produto/allActive" };
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
