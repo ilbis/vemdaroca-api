@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
-import com.vemdaroca.vemdarocaapi.model.Cliente;
+import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
 import com.vemdaroca.vemdarocaapi.service.EmailService;
+import com.vemdaroca.vemdarocaapi.service.ExcelService;
 import com.vemdaroca.vemdarocaapi.service.ItemPedidoService;
+import com.vemdaroca.vemdarocaapi.util.CommandLineUtil;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -39,6 +41,12 @@ public class ItemPedidoController {
 
 	@Autowired
 	private ClienteService clienteService;
+
+	@Autowired
+	private ExcelService excelService;
+
+	@Autowired
+	private CommandLineUtil commandLineUtil;
 
 	@GetMapping(value = "allActive")
 	@ApiOperation(value = "Retorna todos itens de pedido ativos")
@@ -76,9 +84,15 @@ public class ItemPedidoController {
 			Authentication x = SecurityContextHolder.getContext().getAuthentication();
 			ClienteResponseDTO cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
 
+			String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
+			CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
+			System.out.println(response.getLogError());
+			excelService.AddRegistroExcel(cliente, itemPedido, "/tmp/Tabela.xlsx");
+
 			System.out.println("EMAIL: " + cliente.getEmail());
 			emailService.sendMail(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
-					itemPedidoService.formatedPedidoEmail(itemPedido));
+					itemPedidoService.formatedPedidoEmail(itemPedido), "/tmp/Tabela.xlsx");
+
 		} catch (Exception e) {
 			System.out.println("Erro ao enviar email: " + e);
 			throw new Exception(e);
