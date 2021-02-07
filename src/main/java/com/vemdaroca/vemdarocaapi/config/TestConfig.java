@@ -64,16 +64,16 @@ public class TestConfig implements CommandLineRunner {
 
 		Produto pr1 = new Produto(null, "Batata", "Tuberculo", 8.50, UnidMedida.KILO, 'A');
 		Produto pr2 = new Produto(null, "Abobrinha 45 dias - Italiana", "Fruta", 3.90, UnidMedida.KILO, 'A');
-		Produto pr3 = new Produto(null, "Acelga", "Verdura", 4.90, UnidMedida.MACO, 'A');
-		Produto pr4 = new Produto(null, "Agrião", "Verdura", 4.50, UnidMedida.MACO, 'A');
+		Produto pr3 = new Produto(null, "Acelga", "Verdura", 4.90, UnidMedida.MAÇO, 'A');
+		Produto pr4 = new Produto(null, "Agrião", "Verdura", 4.50, UnidMedida.MAÇO, 'A');
 		Produto pr5 = new Produto(null, "Alface Americana", "Verdura", 4.00, UnidMedida.UNIDADE, 'A');
 		Produto pr6 = new Produto(null, "Alface Crespa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
 		Produto pr7 = new Produto(null, "Alface Lisa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
 		Produto pr8 = new Produto(null, "Alface Mimosa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
 		Produto pr9 = new Produto(null, "Alface Roxa", "Verdura", 4.00, UnidMedida.UNIDADE, 'A');
-		Produto pr10 = new Produto(null, "Almeirão", "Verdura", 3.50, UnidMedida.MACO, 'A');
+		Produto pr10 = new Produto(null, "Almeirão", "Verdura", 3.50, UnidMedida.MAÇO, 'A');
 		Produto pr11 = new Produto(null, "Alho ", "Tuberculo", 28.00, UnidMedida.KILO, 'A');
-		Produto pr12 = new Produto(null, "Alho Poro", "Verdura", 4.90, UnidMedida.MACO, 'A');
+		Produto pr12 = new Produto(null, "Alho Poro", "Verdura", 4.90, UnidMedida.MAÇO, 'A');
 		Produto pr13 = new Produto(null, "Abobora Pescoço", "Fruta", 4.00, UnidMedida.KILO, 'A');
 
 		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
@@ -111,10 +111,10 @@ public class TestConfig implements CommandLineRunner {
 
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
-		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
-		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
-		System.out.println(response.getLogError());
-		excelService.AddRegistroExcel(ClienteResponseDTO.toDTO(cl2),
-				Arrays.asList(it1, it2, it3, it4, it5, it6, it7, it8, it9, it10), "/tmp/Tabela.xlsx");
+//		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
+//		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
+//		System.out.println(response.getLogError());
+//		excelService.AddRegistroExcel(ClienteResponseDTO.toDTO(cl2),
+//				Arrays.asList(it1, it2, it3, it4, it5, it6, it7, it8, it9, it10), "/tmp/Tabela.xlsx");
 	}
 }

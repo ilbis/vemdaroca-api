@@ -95,10 +95,10 @@ public class ItemPedidoService {
 		returnText.append("Data do pedido: " + dataFormatada + "\n");
 		itemPedido.forEach(item -> {
 			returnText.append("QTD: " + item.getQtd() + " \t\t Produto: " + item.getProduto().getNome()
-					+ " \t\t\t\t\t Valor Unitário: R$" + item.getValor() + " \t\t\t\t\t SubTotal: R$"
-					+ item.getSubTotal() + "\n");
+					+ " \t\t\t\t\t Valor Unitário: R$" + String.format("%.2f", item.getValor())
+					+ " \t\t\t\t\t SubTotal: R$" + String.format("%.2f", item.getSubTotal()) + "\n");
 		});
-		returnText.append("Valor Médio Total: R$" + pedido.getTotal());
+		returnText.append("Valor Médio Total: R$" + String.format("%.2f", pedido.getTotal()));
 		return returnText.toString();
 	}
 }

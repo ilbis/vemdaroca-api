@@ -4,5 +4,5 @@ public enum UnidMedida {
 	KILO,
 	UNIDADE,
 	LITRO,
-	MACO
+	MAÇO
 }
