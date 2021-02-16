@@ -19,7 +19,7 @@ public class ProdutoService {
 	}
 
 	public List<Produto> getAll() {
-		return produtoRepository.findAll();
+		return produtoRepository.findAllNoRemoved();
 	}
 
 	public Produto getById(Long id) {
@@ -40,7 +40,7 @@ public class ProdutoService {
 
 	public Produto delete(Long id) {
 		Produto entity = produtoRepository.findById(id).get();
-		entity.setStatus('I');
+		entity.setStatus('R');
 		return produtoRepository.save(entity);
 	}
 
