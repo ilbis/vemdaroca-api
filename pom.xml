@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.vemdaroca</groupId>
 	<artifactId>vemdaroca-api</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.7</version>
 	<name>vemdaroca-api</name>
 	<description>Projeto API Vem da Roça</description>
 
