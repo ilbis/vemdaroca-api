@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 
-import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 
 @Service
@@ -29,7 +29,7 @@ public class ExcelService {
 	private static int COLUNA_TIPO = 9;
 	private static int COLUNA_TOTAL = 10;
 
-	public void AddRegistroExcel(ClienteResponseDTO cliente, List<ItemPedido> itensPedido, String excelFilePath) {
+	public void AddRegistroExcel(Cliente cliente, List<ItemPedido> itensPedido, String excelFilePath) {
 
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(excelFilePath));

@@ -70,7 +70,7 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "VALIDATORCODE", length = 4)
+	@Column(name = "VALIDATORCODE", length = 15)
 	private String validatorCode;
 
 	@Enumerated(EnumType.STRING)

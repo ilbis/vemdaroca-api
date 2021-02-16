@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
 import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
@@ -82,7 +82,7 @@ public class ItemPedidoController {
 
 		try {
 			Authentication x = SecurityContextHolder.getContext().getAuthentication();
-			ClienteResponseDTO cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
+			Cliente cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
 
 			String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
 			CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);

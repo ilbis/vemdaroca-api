@@ -1,7 +1,6 @@
 package com.vemdaroca.vemdarocaapi.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;

@@ -37,10 +37,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
 				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
-				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll().antMatchers(HttpMethod.POST, "/email")
-				.permitAll().antMatchers(HttpMethod.OPTIONS, "/email").permitAll()
-				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS)
-				.hasAnyRole("ADMIN", "USER").antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
+				.permitAll().antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/login").permitAll().antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/cliente/recuperaCadastro").permitAll().antMatchers(HttpMethod.GET, ADMIN_ACCESS)
+				.hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST, USER_POST_ACCESS).hasAnyRole("ADMIN", "USER")
 				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.DELETE, ADMIN_ACCESS)
 				.hasRole("ADMIN").and().authorizeRequests().anyRequest().authenticated().and()
@@ -68,7 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
 //				"/itempedido/**" };
 
-		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.POST, "/email");
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
+				.antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").antMatchers("/h2-console/**");
 
 	}
 

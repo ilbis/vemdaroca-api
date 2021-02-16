@@ -28,8 +28,8 @@ public class ClienteService {
 		return clienteRepository.findAll().stream().map(c -> ClienteResponseDTO.toDTO(c)).collect(Collectors.toList());
 	}
 
-	public ClienteResponseDTO getById(Long id) {
-		return ClienteResponseDTO.toDTO(clienteRepository.findById(id).get());
+	public Cliente getById(Long id) {
+		return clienteRepository.findById(id).get();
 	}
 
 	public List<ClienteResponseDTO> getByName(String nome) {
@@ -40,7 +40,7 @@ public class ClienteService {
 	public ClienteResponseDTO getByUserName(String username) {
 		return ClienteResponseDTO.toDTO(clienteRepository.findByUserName(username).get());
 	}
-	
+
 	public Cliente getByEmail(String email) {
 		return clienteRepository.findByEmail(email).get();
 	}
