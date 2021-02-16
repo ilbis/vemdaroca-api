@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
@@ -110,8 +111,9 @@ public class TestConfig implements CommandLineRunner {
 
 		itemPedidoRepository.saveAll(Arrays.asList(it1));
 
-//		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
-//		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
+
+		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
+		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
 //		System.out.println(response.getLogError());
 //		excelService.AddRegistroExcel(ClienteResponseDTO.toDTO(cl2),
 //				Arrays.asList(it1, it2, it3, it4, it5, it6, it7, it8, it9, it10), "/tmp/Tabela.xlsx");
