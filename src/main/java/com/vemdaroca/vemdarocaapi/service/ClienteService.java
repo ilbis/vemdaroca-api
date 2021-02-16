@@ -59,7 +59,12 @@ public class ClienteService {
 	}
 
 	public ClienteResponseDTO update(Long id, Cliente cliente) {
+		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());
+		String passwordNew = new String(decodedBytes);
+		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
+		cliente.setStatus('A');
 		Cliente entity = clienteRepository.findById(id).get();
+
 		updateData(entity, cliente);
 		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
 	}

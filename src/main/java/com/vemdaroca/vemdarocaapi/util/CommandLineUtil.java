@@ -12,6 +12,7 @@ import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Component
 @Slf4j
 public class CommandLineUtil {

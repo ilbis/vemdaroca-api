@@ -7,6 +7,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +64,14 @@ public class ClienteController {
 		return ResponseEntity.ok().body(ClienteResponseDTO.toDTO(clienteService.getById(id)));
 	}
 
+	@GetMapping(value = "/userOnSession")
+	@ApiOperation(value = "Retorna cliente da sessao")
+	public ResponseEntity<ClienteResponseDTO> getByIdOnSession() {
+		Authentication x = SecurityContextHolder.getContext().getAuthentication();
+		return ResponseEntity.ok()
+				.body(ClienteResponseDTO.toDTO(clienteService.getById(Long.parseLong(x.getPrincipal().toString()))));
+	}
+
 	@GetMapping(value = "/getCliente")
 	@ApiOperation(value = "Retorna cliente por nome")
 	public ResponseEntity<List<ClienteResponseDTO>> getByName(
@@ -112,6 +122,14 @@ public class ClienteController {
 	@ApiOperation(value = "Atualiza um cliente")
 	public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @RequestBody ClienteDTO dto) {
 		return ResponseEntity.ok().body(clienteService.update(id, dto.toObject()));
+	}
+
+	@PutMapping(value = "/userOnSession")
+	@ApiOperation(value = "Atualiza cliente da sessao")
+	public ResponseEntity<ClienteResponseDTO> updateUserSession(@RequestBody ClienteDTO dto) {
+		Authentication x = SecurityContextHolder.getContext().getAuthentication();
+		return ResponseEntity.ok()
+				.body(clienteService.update(Long.parseLong(x.getPrincipal().toString()), dto.toObject()));
 	}
 
 	@PostMapping(value = "/recuperaCadastro")

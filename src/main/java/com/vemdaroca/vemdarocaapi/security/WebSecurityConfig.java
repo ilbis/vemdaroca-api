@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/all", "/itempedido",
 			"/itempedido/all" };
 
-	private static final String[] USER_GET_ACCESS = { "/produto/allActive" };
+	private static final String[] USER_GET_ACCESS = { "/produto/allActive", "cliente/userOnSession" };
+	private static final String[] USER_PUT_ACCESS = { "cliente/userOnSession" };
 	private static final String[] USER_POST_ACCESS = { "/itempedido/createAll" };
 
 	@Override
@@ -38,9 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
 				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
 				.permitAll().antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/login").permitAll().antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/cliente/recuperaCadastro").permitAll().antMatchers(HttpMethod.GET, ADMIN_ACCESS)
-				.hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/cliente/recuperaCadastro").permitAll()
+				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS)
+				.hasAnyRole("ADMIN", "USER").antMatchers(HttpMethod.PUT, USER_PUT_ACCESS).hasAnyRole("ADMIN", "USER")
 				.antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST, USER_POST_ACCESS).hasAnyRole("ADMIN", "USER")
 				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.DELETE, ADMIN_ACCESS)
@@ -69,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
 //				"/itempedido/**" };
 
-		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente")
+				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
 				.antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").antMatchers("/h2-console/**");
 
 	}
