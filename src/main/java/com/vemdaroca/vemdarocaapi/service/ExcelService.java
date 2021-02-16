@@ -13,13 +13,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
-import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
-import com.vemdaroca.vemdarocaapi.util.CommandLineUtil;
 
 @Service
 public class ExcelService {
@@ -69,7 +66,7 @@ public class ExcelService {
 						Cell cellCusto = row.getCell(COLUNA_TOTAL);
 						cellUnitario.setCellValue(item.getValor());
 						cellQtd.setCellValue(item.getQtd());
-						cellTipo.setCellValue(item.getProduto().getTipo());
+						cellTipo.setCellValue(item.getProduto().getTipo().toString());
 						cellCusto.setCellValue(item.getSubTotal());
 						break;
 					}

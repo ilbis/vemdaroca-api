@@ -29,8 +29,11 @@ public class Produto implements Serializable {
 	@Column(name = "NOME", nullable = false, unique = true, length = 100)
 	private String nome;
 
-	@Column(name = "TIPO", nullable = false, length = 10)
-	private String tipo;
+//	@Column(name = "TIPO", nullable = false, length = 10)
+//	private String tipo;
+	
+	@Enumerated(EnumType.STRING)
+	private Tipo tipo;
 
 	@Column(name = "VALOR", nullable = false)
 	private Double valor;
@@ -47,7 +50,7 @@ public class Produto implements Serializable {
 	public Produto() {
 	}
 
-	public Produto(Long id, String nome, String tipo, Double valor, UnidMedida unidMedida, char status) {
+	public Produto(Long id, String nome, Tipo tipo, Double valor, UnidMedida unidMedida, char status) {
 		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;
@@ -80,11 +83,11 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
 

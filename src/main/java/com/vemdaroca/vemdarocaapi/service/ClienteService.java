@@ -40,6 +40,10 @@ public class ClienteService {
 	public ClienteResponseDTO getByUserName(String username) {
 		return ClienteResponseDTO.toDTO(clienteRepository.findByUserName(username).get());
 	}
+	
+	public Cliente getByEmail(String email) {
+		return clienteRepository.findByEmail(email).get();
+	}
 
 	public ClienteResponseDTO create(Cliente cliente) {
 		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());

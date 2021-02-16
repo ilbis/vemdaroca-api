@@ -20,7 +20,7 @@ public class EmailService {
 		this.javaMailSender = javaMailSender;
 	}
 
-	public void sendMail(String toEmail, String subject, String message, String pathFile) throws MessagingException {
+	public void sendMailWithFile(String toEmail, String subject, String message, String pathFile) throws MessagingException {
 
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
@@ -32,6 +32,24 @@ public class EmailService {
 			helper.setSubject(subject);
 			File attach = new File(pathFile);
 			helper.addAttachment("Relatorio.xlsx", attach);
+
+			javaMailSender.send(mimeMessage);
+			System.out.println("Envio com Sucesso!");
+		} catch (MailException e) {
+			System.out.println("Email não pode ser eviado!\n" + e.getMessage());
+		}
+	}
+	
+	public void sendMail(String toEmail, String subject, String message) throws MessagingException {
+
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper;
+
+		try {
+			helper = new MimeMessageHelper(mimeMessage, true);
+			helper.setTo(toEmail);
+			helper.setText(message, false);
+			helper.setSubject(subject);
 
 			javaMailSender.send(mimeMessage);
 			System.out.println("Envio com Sucesso!");

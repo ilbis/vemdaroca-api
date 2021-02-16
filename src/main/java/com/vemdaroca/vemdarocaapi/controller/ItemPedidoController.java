@@ -90,7 +90,7 @@ public class ItemPedidoController {
 			excelService.AddRegistroExcel(cliente, itemPedido, "/tmp/Tabela.xlsx");
 
 			System.out.println("EMAIL: " + cliente.getEmail());
-			emailService.sendMail(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
+			emailService.sendMailWithFile(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
 					itemPedidoService.formatedPedidoEmail(itemPedido), "/tmp/Tabela.xlsx");
 
 		} catch (Exception e) {

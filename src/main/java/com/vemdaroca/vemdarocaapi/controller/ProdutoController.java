@@ -66,4 +66,10 @@ public class ProdutoController {
 	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto) {
 		return ResponseEntity.ok().body(produtoService.update(id, produto));
 	}
+	
+	@PutMapping(value = "/all")
+	@ApiOperation(value = "Atualiza lista de produtos")
+	public ResponseEntity<List<Produto>> updateAll(@RequestBody List<Produto> produtos) {
+		return ResponseEntity.ok().body(produtoService.updateAll(produtos));
+	}
 }

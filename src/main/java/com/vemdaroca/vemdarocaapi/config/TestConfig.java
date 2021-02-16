@@ -9,13 +9,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
-import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
 import com.vemdaroca.vemdarocaapi.model.Produto;
 import com.vemdaroca.vemdarocaapi.model.Role;
+import com.vemdaroca.vemdarocaapi.model.Tipo;
 import com.vemdaroca.vemdarocaapi.model.UnidMedida;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.repository.ItemPedidoRepository;
@@ -62,19 +61,19 @@ public class TestConfig implements CommandLineRunner {
 		String passwordNew = new String(decodedBytes);
 		String mySecurePassword = PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT);
 
-		Produto pr1 = new Produto(null, "Batata", "Tuberculo", 8.50, UnidMedida.KILO, 'A');
-		Produto pr2 = new Produto(null, "Abobrinha 45 dias - Italiana", "Fruta", 3.90, UnidMedida.KILO, 'A');
-		Produto pr3 = new Produto(null, "Acelga", "Verdura", 4.90, UnidMedida.MAÇO, 'A');
-		Produto pr4 = new Produto(null, "Agrião", "Verdura", 4.50, UnidMedida.MAÇO, 'A');
-		Produto pr5 = new Produto(null, "Alface Americana", "Verdura", 4.00, UnidMedida.UNIDADE, 'A');
-		Produto pr6 = new Produto(null, "Alface Crespa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
-		Produto pr7 = new Produto(null, "Alface Lisa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
-		Produto pr8 = new Produto(null, "Alface Mimosa", "Verdura", 3.50, UnidMedida.UNIDADE, 'A');
-		Produto pr9 = new Produto(null, "Alface Roxa", "Verdura", 4.00, UnidMedida.UNIDADE, 'A');
-		Produto pr10 = new Produto(null, "Almeirão", "Verdura", 3.50, UnidMedida.MAÇO, 'A');
-		Produto pr11 = new Produto(null, "Alho ", "Tuberculo", 28.00, UnidMedida.KILO, 'A');
-		Produto pr12 = new Produto(null, "Alho Poro", "Verdura", 4.90, UnidMedida.MAÇO, 'A');
-		Produto pr13 = new Produto(null, "Abobora Pescoço", "Fruta", 4.00, UnidMedida.KILO, 'A');
+		Produto pr1 = new Produto(null, "Batata", Tipo.TUBERCULO, 8.50, UnidMedida.KILO, 'A');
+		Produto pr2 = new Produto(null, "Abobrinha 45 dias - Italiana", Tipo.FRUTA, 3.90, UnidMedida.KILO, 'A');
+		Produto pr3 = new Produto(null, "Acelga", Tipo.VERDURA, 4.90, UnidMedida.MAÇO, 'A');
+		Produto pr4 = new Produto(null, "Agrião", Tipo.VERDURA, 4.50, UnidMedida.MAÇO, 'A');
+		Produto pr5 = new Produto(null, "Alface Americana", Tipo.VERDURA, 4.00, UnidMedida.UNIDADE, 'A');
+		Produto pr6 = new Produto(null, "Alface Crespa", Tipo.VERDURA, 3.50, UnidMedida.UNIDADE, 'A');
+		Produto pr7 = new Produto(null, "Alface Lisa", Tipo.VERDURA, 3.50, UnidMedida.UNIDADE, 'A');
+		Produto pr8 = new Produto(null, "Alface Mimosa", Tipo.VERDURA, 3.50, UnidMedida.UNIDADE, 'A');
+		Produto pr9 = new Produto(null, "Alface Roxa", Tipo.VERDURA, 4.00, UnidMedida.UNIDADE, 'A');
+		Produto pr10 = new Produto(null, "Almeirão", Tipo.VERDURA, 3.50, UnidMedida.MAÇO, 'A');
+		Produto pr11 = new Produto(null, "Alho ", Tipo.TUBERCULO, 28.00, UnidMedida.KILO, 'A');
+		Produto pr12 = new Produto(null, "Alho Poro", Tipo.VERDURA, 4.90, UnidMedida.MAÇO, 'A');
+		Produto pr13 = new Produto(null, "Abobora Pescoço", Tipo.FRUTA, 4.00, UnidMedida.KILO, 'A');
 
 		System.out.println("Imprimindo:" + Role.ROLE_ADMIN);
 

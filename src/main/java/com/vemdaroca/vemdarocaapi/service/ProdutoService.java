@@ -1,7 +1,6 @@
 package com.vemdaroca.vemdarocaapi.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,6 +48,10 @@ public class ProdutoService {
 		Produto entity = produtoRepository.findById(id).get();
 		updateData(entity, produto);
 		return produtoRepository.save(entity);
+	}
+	
+	public List<Produto> updateAll(List<Produto> produtos) {
+		return produtoRepository.saveAll(produtos);
 	}
 
 	private void updateData(Produto entity, Produto produto) {

@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/all", "/itempedido",
 			"/itempedido/all" };
-	
+
 	private static final String[] USER_GET_ACCESS = { "/produto/allActive" };
 	private static final String[] USER_POST_ACCESS = { "/itempedido/createAll" };
 
@@ -37,14 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
 				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
-				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET, USER_GET_ACCESS).hasAnyRole("ADMIN", "USER")
-				.antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
+				.permitAll().antMatchers(HttpMethod.POST, "/login").permitAll().antMatchers(HttpMethod.POST, "/email")
+				.permitAll().antMatchers(HttpMethod.OPTIONS, "/email").permitAll()
+				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS)
+				.hasAnyRole("ADMIN", "USER").antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST, USER_POST_ACCESS).hasAnyRole("ADMIN", "USER")
-				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE, ADMIN_ACCESS).hasRole("ADMIN").and().authorizeRequests().anyRequest()
-				.authenticated().and()
+				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.DELETE, ADMIN_ACCESS)
+				.hasRole("ADMIN").and().authorizeRequests().anyRequest().authenticated().and()
 
 				// filtra requisições de login
 
@@ -66,10 +65,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 
-		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
-				"/itempedido/**" };
+//		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
+//				"/itempedido/**" };
 
-		web.ignoring().antMatchers(HttpMethod.POST, "/cliente");
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.POST, "/email");
 
 	}
 
