@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
+import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
 import com.vemdaroca.vemdarocaapi.service.ClienteService;
 import com.vemdaroca.vemdarocaapi.service.EmailService;
 import com.vemdaroca.vemdarocaapi.service.ExcelService;
@@ -35,6 +35,9 @@ public class ItemPedidoController {
 
 	@Autowired
 	private ItemPedidoService itemPedidoService;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	@Autowired
 	private EmailService emailService;
@@ -84,14 +87,11 @@ public class ItemPedidoController {
 			Authentication x = SecurityContextHolder.getContext().getAuthentication();
 			Cliente cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
 
-			String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
-			CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
-			System.out.println(response.getLogError());
-			excelService.AddRegistroExcel(cliente, itemPedido, "/tmp/Tabela.xlsx");
+			pedido = pedidoRepository.findById(itemPedido.get(0).getPedido().getId()).get();
 
 			System.out.println("EMAIL: " + cliente.getEmail());
-			emailService.sendMailWithFile(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
-					itemPedidoService.formatedPedidoEmail(itemPedido), "/tmp/Tabela.xlsx");
+			emailService.sendMail(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
+					emailService.formatedPedidoEmail(pedido,itemPedido));
 
 		} catch (Exception e) {
 			System.out.println("Erro ao enviar email: " + e);

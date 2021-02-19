@@ -10,17 +10,26 @@ import org.springframework.stereotype.Component;
 import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.DataRelatorio;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
+import com.vemdaroca.vemdarocaapi.model.Produto;
 import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
+import com.vemdaroca.vemdarocaapi.repository.ProdutoRepository;
 import com.vemdaroca.vemdarocaapi.util.CommandLineUtil;
 
 @Component(value = "pedidoService")
 public class PedidoService {
+	private static String COMMAND = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
 
 	@Autowired
 	PedidoRepository pedidoRepository;
 
 	@Autowired
+	ProdutoRepository produtoRepository;
+
+	@Autowired
 	private CommandLineUtil commandLineUtil;
+
+	@Autowired
+	private ExcelService excelService;
 
 	public List<Pedido> getAllActive() {
 		return pedidoRepository.findAllStatusActive();
@@ -59,15 +68,23 @@ public class PedidoService {
 	}
 
 	public File gerarRelatorio(DataRelatorio data) {
-		try {
-			String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
-			CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
-			System.out.println(response.getLogError());
+		List<Produto> produtos = produtoRepository.findAllNoRemoved();
+		List<Pedido> pedidos = pedidoRepository.findAllInRange(data.getStart(), data.getEnd());
 
-		} catch (IOException | InterruptedException e) {
-			System.out.println("Erro ao baixar arquivo");
+		if (pedidos.size() > 0) {
+			try {
+				CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", COMMAND);
+				System.out.println(response.getLogError());
+
+				excelService.AddRegistroExcel(produtos, pedidos, "/tmp/Tabela.xlsx");
+
+				return new File("/tmp/Tabela.xlsx");
+
+			} catch (IOException | InterruptedException e) {
+				System.out.println("Erro ao baixar arquivo");
+			}
 		}
-		return new File("/tmp/Tabela.xlsx");
+		return null;
 	}
 
 }

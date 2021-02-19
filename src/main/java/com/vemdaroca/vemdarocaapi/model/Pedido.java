@@ -1,9 +1,12 @@
 package com.vemdaroca.vemdarocaapi.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -129,7 +132,12 @@ public class Pedido implements Serializable {
 		return "Pedido [id=" + id + ", moment=" + moment + ", status=" + status + ", cliente=" + cliente + ", items="
 				+ items + "]";
 	}
-	
 
+	public String getDataFormatada() {
+		Date date = Date.from(moment);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+		return formatter.format(date);
+	}
 
 }

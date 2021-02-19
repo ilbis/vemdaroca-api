@@ -9,7 +9,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.vemdaroca.vemdarocaapi.dto.CommandReturnDTO;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
 import com.vemdaroca.vemdarocaapi.model.Pedido;
@@ -92,7 +91,11 @@ public class TestConfig implements CommandLineRunner {
 
 		Pedido pe2 = new Pedido(null, Instant.now(), 'A', cl1);
 
-		Pedido pe3 = new Pedido(null, Instant.now(), 'A', cl1);
+		Pedido pe3 = new Pedido(null, Instant.now(), 'A', cl2);
+
+		Pedido pe4 = new Pedido(null, Instant.now(), 'A', cl1);
+
+		Pedido pe5 = new Pedido(null, Instant.now(), 'A', cl2);
 
 		clienteRepository.saveAll(Arrays.asList(cl1, cl2));
 
@@ -101,19 +104,18 @@ public class TestConfig implements CommandLineRunner {
 		ItemPedido it1 = new ItemPedido(pe1, pr1, 10.00, pr1.getValor(), 'A');
 		ItemPedido it2 = new ItemPedido(pe1, pr2, 10.00, pr2.getValor(), 'A');
 		ItemPedido it3 = new ItemPedido(pe1, pr3, 10.00, pr3.getValor(), 'A');
-		ItemPedido it4 = new ItemPedido(pe1, pr4, 10.00, pr4.getValor(), 'A');
-		ItemPedido it5 = new ItemPedido(pe1, pr5, 10.00, pr5.getValor(), 'A');
-		ItemPedido it6 = new ItemPedido(pe1, pr6, 10.00, pr6.getValor(), 'A');
-		ItemPedido it7 = new ItemPedido(pe1, pr7, 10.00, pr7.getValor(), 'A');
-		ItemPedido it8 = new ItemPedido(pe1, pr8, 10.00, pr8.getValor(), 'A');
-		ItemPedido it9 = new ItemPedido(pe1, pr9, 10.00, pr9.getValor(), 'A');
-		ItemPedido it10 = new ItemPedido(pe1, pr10, 10.00, pr10.getValor(), 'A');
+		ItemPedido it4 = new ItemPedido(pe2, pr4, 10.00, pr4.getValor(), 'A');
+		ItemPedido it5 = new ItemPedido(pe2, pr5, 10.00, pr5.getValor(), 'A');
+		ItemPedido it6 = new ItemPedido(pe2, pr6, 10.00, pr6.getValor(), 'A');
+		ItemPedido it7 = new ItemPedido(pe3, pr7, 10.00, pr7.getValor(), 'A');
+		ItemPedido it8 = new ItemPedido(pe3, pr8, 10.00, pr8.getValor(), 'A');
+		ItemPedido it9 = new ItemPedido(pe3, pr9, 10.00, pr9.getValor(), 'A');
+		ItemPedido it10 = new ItemPedido(pe3, pr10, 10.00, pr10.getValor(), 'A');
 
-		itemPedidoRepository.saveAll(Arrays.asList(it1));
+		itemPedidoRepository.saveAll(Arrays.asList(it1, it2, it3, it4, it5, it6, it7, it8, it9, it10));
 
-
-		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
-		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
+//		String command = "curl -fsSL -o /tmp/Tabela.xlsx https://docs.google.com/spreadsheets/d/e/2PACX-1vSWxfvK3Qk0w4Tx9LAboQJa850J-pZK56wR0QbyiYeNnyZBXb169toQKDlSYmDwLdzcnEpbOgiXqxpI/pub?output=xlsx";
+//		CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", command);
 //		System.out.println(response.getLogError());
 //		excelService.AddRegistroExcel(ClienteResponseDTO.toDTO(cl2),
 //				Arrays.asList(it1, it2, it3, it4, it5, it6, it7, it8, it9, it10), "/tmp/Tabela.xlsx");

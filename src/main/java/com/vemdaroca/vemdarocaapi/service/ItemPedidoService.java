@@ -79,26 +79,4 @@ public class ItemPedidoService {
 		entity.setStatus(itemPedido.getStatus());
 		entity.setValor(itemPedido.getValor());
 	}
-
-	public String formatedPedidoEmail(List<ItemPedido> itemPedido) {
-		StringBuilder returnText = new StringBuilder();
-
-		Pedido pedido = pedidoRepository.findById(itemPedido.get(0).getPedido().getId()).get();
-		Date moment = Date.from(pedido.getMoment());
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
-		String dataFormatada = formatter.format(moment);
-
-		returnText.append("Agradecemos seu pedido!! =D \n");
-		returnText.append("Seu pedido foi solicitado com sucesso, abaixo está melhor detalhado: \n");
-		returnText.append("Pedido: " + pedido.getId() + "\n");
-		returnText.append("Data do pedido: " + dataFormatada + "\n");
-		itemPedido.forEach(item -> {
-			returnText.append("QTD: " + item.getQtd() + " \t\t Produto: " + item.getProduto().getNome()
-					+ " \t\t\t\t\t Valor Unitário: R$" + String.format("%.2f", item.getValor())
-					+ " \t\t\t\t\t SubTotal: R$" + String.format("%.2f", item.getSubTotal()) + "\n");
-		});
-		returnText.append("Valor Médio Total: R$" + String.format("%.2f", pedido.getTotal()));
-		return returnText.toString();
-	}
 }

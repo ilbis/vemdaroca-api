@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -15,8 +17,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 
-import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
+import com.vemdaroca.vemdarocaapi.model.Pedido;
+import com.vemdaroca.vemdarocaapi.model.Produto;
 
 @Service
 public class ExcelService {
@@ -29,7 +32,7 @@ public class ExcelService {
 	private static int COLUNA_TIPO = 9;
 	private static int COLUNA_TOTAL = 10;
 
-	public void AddRegistroExcel(Cliente cliente, List<ItemPedido> itensPedido, String excelFilePath) {
+	public void AddRegistroExcel(List<Produto> produtos, List<Pedido> pedidos, String excelFilePath) {
 
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
@@ -37,41 +40,67 @@ public class ExcelService {
 
 			Sheet sheet = workbook.getSheetAt(0);
 
-			Object[] bookData = { cliente.getId().toString(),
-					cliente.getBairro() + " - " + cliente.getCidade() + " - " + cliente.getUf(), cliente.getNome(),
-					cliente.getRua() + ", " + cliente.getNumero(), "", cliente.getTel() };
+			// mapa idProduto - linhaProduto
+			Map<Long, Integer> mapaProduto = new HashMap<Long, Integer>();
 
-			int line = 3;
-			for (Object field : bookData) {
-				Row row = sheet.getRow(line++); // seta linha
+			int linhaProduto = 14; // linha inicial produtos
 
-				Cell cell = row.getCell(8); // seta coluna
-				if (field instanceof String) {
-					cell.setCellValue((String) field);
-				} else if (field instanceof Integer) {
-					cell.setCellValue((Integer) field);
-				}
+			for (Produto produto : produtos) {
+				mapaProduto.put(produto.getId(), linhaProduto);
+
+				Row row = sheet.getRow(linhaProduto); // seta linha
+
+				Cell nome = row.getCell(1); // seta coluna
+				Cell valor = row.getCell(2);
+				Cell tipo = row.getCell(3);
+				Cell unidMedida = row.getCell(4);
+
+				nome.setCellValue(produto.getNome());
+				valor.setCellValue(produto.getValor());
+				tipo.setCellValue(produto.getTipo().toString());
+				unidMedida.setCellValue(produto.getUnidMedida().toString());
+
+				linhaProduto++;
 			}
 
-			itensPedido.forEach(item -> {
-				for (int i = LINHA_INICIAL_PRODUTO; i <= LINHA_FINAL_PRODUTO; i++) {
-					Row row = sheet.getRow(i);
-					Cell cell = row.getCell(COLUNA_PRODUTO);
+			int colunaPedido = 6;
 
-					if (cell.toString().trim().toUpperCase()
-							.equals(item.getProduto().getNome().toString().trim().toUpperCase())) {
-						Cell cellUnitario = row.getCell(COLUNA_VALOR_UNITARIO);
-						Cell cellQtd = row.getCell(COLUNA_QTD);
-						Cell cellTipo = row.getCell(COLUNA_TIPO);
-						Cell cellCusto = row.getCell(COLUNA_TOTAL);
-						cellUnitario.setCellValue(item.getValor());
-						cellQtd.setCellValue(item.getQtd());
-						cellTipo.setCellValue(item.getProduto().getTipo().toString());
-						cellCusto.setCellValue(item.getSubTotal());
-						break;
-					}
+			for (Pedido pedido : pedidos) {
+				String[] valores = { pedido.getId().toString(), pedido.getCliente().getId().toString(),
+						pedido.getDataFormatada(), pedido.getCliente().getNome(), pedido.getCliente().getUsername(),
+						pedido.getCliente().getEmail(),
+						pedido.getCliente().getRua() + ", " + pedido.getCliente().getNumero() + " - "
+								+ pedido.getCliente().getBairro() + " - " + pedido.getCliente().getCidade() + " - "
+								+ pedido.getCliente().getCep(),
+						pedido.getCliente().getComplemento(), pedido.getCliente().getTel() };
+
+				// Seta dados do cliente
+				for (int linha = 1; linha < 10; linha++) {
+					Row row = sheet.getRow(linha); // seta linha
+					Cell cell = row.getCell(colunaPedido);
+					cell.setCellValue(valores[linha - 1]);
 				}
-			});
+
+				for (ItemPedido item : pedido.getItems()) {
+					Row row = sheet.getRow(mapaProduto.get(item.getProduto().getId())); // seta linha
+					Cell qtd = row.getCell(colunaPedido);
+					Cell tipo = row.getCell(colunaPedido + 1);
+					Cell total = row.getCell(colunaPedido + 2);
+
+					qtd.setCellValue(item.getQtd());
+					tipo.setCellValue(item.getProduto().getTipo().toString());
+					total.setCellValue(item.getSubTotal());
+				}
+
+				Row row = sheet.getRow(linhaProduto); // seta linha
+				Cell nome = row.getCell(colunaPedido + 1); // seta coluna
+				Cell total = row.getCell(colunaPedido + 2); // seta coluna
+				
+				nome.setCellValue("TOTAL");
+				total.setCellValue(pedido.getTotal());
+
+				colunaPedido += 4;
+			}
 
 			inputStream.close();
 
@@ -85,38 +114,4 @@ public class ExcelService {
 		}
 	}
 
-//	int rowCount = sheet.getLastRowNum();
-//	int columnCountSize = sheet.getDefaultColumnWidth();
-
-//	for (Object[] aBook : bookData) {
-
-//		Row row = sheet.createRow(++rowCount);
-//		int columnCount = 0;
-
-//		Cell cell = row.createCell(columnCount);
-//		cell.setCellValue(rowCount);
-//
-//		for (Object field : aBook) {
-//			cell = row.createCell(++columnCount);
-//			if (field instanceof String) {
-//				cell.setCellValue((String) field);
-//			} else if (field instanceof Integer) {
-//				cell.setCellValue((Integer) field);
-//			}
-//	}
-
-//	int line = 3;
-//	for (Object field : bookData) {
-//		Row row = sheet.createRow(line++); // seta linha
-//		Row row = sheet.getRow(line++); // seta linha
-//
-//		Cell cell = row.getCell(8); // seta coluna
-//		if (field instanceof String) {
-//			cell.setCellValue((String) field);
-//		} else if (field instanceof Integer) {
-//			cell.setCellValue((Integer) field);
-//		}
-//	}
-
-//}
 }

@@ -1,32 +1,42 @@
 package com.vemdaroca.vemdarocaapi.model;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+
 public class DataRelatorio {
 
-	String start;
-	String end;
+	Instant start;
+
+	Instant end;
 
 	public DataRelatorio() {
 	}
 
-	public DataRelatorio(String start, String end) {
-		this.start = start;
+	public DataRelatorio(Instant start, Instant end) {
+		this.start = Instant.now();
 		this.end = end;
 	}
 
-	public String getStart() {
+	public Instant getStart() {
 		return start;
 	}
 
-	public void setStart(String start) {
+	public void setStart(Instant start) {
 		this.start = start;
 	}
 
-	public String getEnd() {
-		return end;
+	public Instant getEnd() {
+		return end.atZone(ZoneOffset.UTC).withDayOfMonth(end.atOffset(ZoneOffset.UTC).getDayOfMonth() + 1).withHour(2)
+				.withMinute(59).withSecond(59).toInstant();
 	}
 
-	public void setEnd(String end) {
+	public void setEnd(Instant end) {
 		this.end = end;
+	}
+
+	@Override
+	public String toString() {
+		return "DataRelatorio [start=" + start + ", end=" + getEnd() + "]";
 	}
 
 }
