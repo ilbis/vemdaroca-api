@@ -71,20 +71,16 @@ public class PedidoService {
 		List<Produto> produtos = produtoRepository.findAllNoRemoved();
 		List<Pedido> pedidos = pedidoRepository.findAllInRange(data.getStart(), data.getEnd());
 
-		if (pedidos.size() > 0) {
 			try {
 				CommandReturnDTO response = commandLineUtil.executeCommandLine("/tmp", COMMAND);
 				System.out.println(response.getLogError());
 
 				excelService.AddRegistroExcel(produtos, pedidos, "/tmp/Tabela.xlsx");
 
-				return new File("/tmp/Tabela.xlsx");
-
 			} catch (IOException | InterruptedException e) {
 				System.out.println("Erro ao baixar arquivo");
 			}
-		}
-		return null;
+		return new File("/tmp/Tabela.xlsx");
 	}
 
 }

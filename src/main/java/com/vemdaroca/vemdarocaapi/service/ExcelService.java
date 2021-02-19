@@ -44,7 +44,6 @@ public class ExcelService {
 			Map<Long, Integer> mapaProduto = new HashMap<Long, Integer>();
 
 			int linhaProduto = 14; // linha inicial produtos
-
 			for (Produto produto : produtos) {
 				mapaProduto.put(produto.getId(), linhaProduto);
 
@@ -95,7 +94,7 @@ public class ExcelService {
 				Row row = sheet.getRow(linhaProduto); // seta linha
 				Cell nome = row.getCell(colunaPedido + 1); // seta coluna
 				Cell total = row.getCell(colunaPedido + 2); // seta coluna
-				
+
 				nome.setCellValue("TOTAL");
 				total.setCellValue(pedido.getTotal());
 
