@@ -34,7 +34,7 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "NOME", length = 100)
 	private String nome;
 
-	@Column(name = "TEL", length = 13)
+	@Column(name = "TEL", length = 14)
 	private String tel;
 
 	@Column(name = "RUA", length = 100)
@@ -67,7 +67,7 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "USERNAME", unique = true, length = 20)
 	private String username;
 
-	@Column(name = "PASSWORD", length = 100)
+	@Column(name = "PASSWORD", length = 50)
 	private String password;
 
 	@Column(name = "VALIDATORCODE", length = 15)

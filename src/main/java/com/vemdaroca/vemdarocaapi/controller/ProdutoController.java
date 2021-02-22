@@ -39,11 +39,11 @@ public class ProdutoController {
 		return ResponseEntity.ok().body(produtoService.getAll());
 	}
 
-	@GetMapping(value = "/{id}")
-	@ApiOperation(value = "Retorna produto por Id")
-	public ResponseEntity<Produto> getById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(produtoService.getById(id));
-	}
+//	@GetMapping(value = "/{id}")
+//	@ApiOperation(value = "Retorna produto por Id")
+//	public ResponseEntity<Produto> getById(@PathVariable Long id) {
+//		return ResponseEntity.ok().body(produtoService.getById(id));
+//	}
 
 	@PostMapping
 	@ApiOperation(value = "Criar um pedido")
@@ -61,11 +61,11 @@ public class ProdutoController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping(value = "/{id}")
-	@ApiOperation(value = "Atualiza um produto")
-	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto) {
-		return ResponseEntity.ok().body(produtoService.update(id, produto));
-	}
+//	@PutMapping(value = "/{id}")
+//	@ApiOperation(value = "Atualiza um produto")
+//	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto) {
+//		return ResponseEntity.ok().body(produtoService.update(id, produto));
+//	}
 	
 	@PutMapping(value = "/all")
 	@ApiOperation(value = "Atualiza lista de produtos")

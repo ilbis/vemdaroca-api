@@ -46,23 +46,23 @@ public class ClienteController {
 	@Autowired
 	private EmailService emailService;
 
-	@GetMapping(value = "/allActive")
-	@ApiOperation(value = "Retorna todos clientes ativos")
-	public ResponseEntity<List<ClienteResponseDTO>> getAllActive() {
-		return ResponseEntity.ok().body(clienteService.getAllActive());
-	}
-
-	@GetMapping(value = "/all")
-	@ApiOperation(value = "Retorna todos clientes")
-	public ResponseEntity<List<ClienteResponseDTO>> getAll() {
-		return ResponseEntity.ok().body(clienteService.getAll());
-	}
-
-	@GetMapping(value = "/{id}")
-	@ApiOperation(value = "Retorna cliente por Id")
-	public ResponseEntity<ClienteResponseDTO> getById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(ClienteResponseDTO.toDTO(clienteService.getById(id)));
-	}
+//	@GetMapping(value = "/allActive")
+//	@ApiOperation(value = "Retorna todos clientes ativos")
+//	public ResponseEntity<List<ClienteResponseDTO>> getAllActive() {
+//		return ResponseEntity.ok().body(clienteService.getAllActive());
+//	}
+//
+//	@GetMapping(value = "/all")
+//	@ApiOperation(value = "Retorna todos clientes")
+//	public ResponseEntity<List<ClienteResponseDTO>> getAll() {
+//		return ResponseEntity.ok().body(clienteService.getAll());
+//	}
+//
+//	@GetMapping(value = "/{id}")
+//	@ApiOperation(value = "Retorna cliente por Id")
+//	public ResponseEntity<ClienteResponseDTO> getById(@PathVariable Long id) {
+//		return ResponseEntity.ok().body(ClienteResponseDTO.toDTO(clienteService.getById(id)));
+//	}
 
 	@GetMapping(value = "/userOnSession")
 	@ApiOperation(value = "Retorna cliente da sessao")
@@ -72,19 +72,19 @@ public class ClienteController {
 				.body(ClienteResponseDTO.toDTO(clienteService.getById(Long.parseLong(x.getPrincipal().toString()))));
 	}
 
-	@GetMapping(value = "/getCliente")
-	@ApiOperation(value = "Retorna cliente por nome")
-	public ResponseEntity<List<ClienteResponseDTO>> getByName(
-			@RequestParam(value = "nome", required = false) String nome) {
-		return ResponseEntity.ok().body(clienteService.getByName(nome));
-	}
-
-	@GetMapping(value = "/getByUserName")
-	@ApiOperation(value = "Retorna cliente por username")
-	public ResponseEntity<ClienteResponseDTO> getByUserName(
-			@RequestParam(value = "username", required = false) String username) {
-		return ResponseEntity.ok().body(clienteService.getByUserName(username));
-	}
+//	@GetMapping(value = "/getCliente")
+//	@ApiOperation(value = "Retorna cliente por nome")
+//	public ResponseEntity<List<ClienteResponseDTO>> getByName(
+//			@RequestParam(value = "nome", required = false) String nome) {
+//		return ResponseEntity.ok().body(clienteService.getByName(nome));
+//	}
+//
+//	@GetMapping(value = "/getByUserName")
+//	@ApiOperation(value = "Retorna cliente por username")
+//	public ResponseEntity<ClienteResponseDTO> getByUserName(
+//			@RequestParam(value = "username", required = false) String username) {
+//		return ResponseEntity.ok().body(clienteService.getByUserName(username));
+//	}
 
 	@PostMapping
 	@ApiOperation(value = "Criar um cliente")
@@ -111,18 +111,18 @@ public class ClienteController {
 		return ResponseEntity.created(uri).body(clienteResponse);
 	}
 
-	@DeleteMapping(value = "/{id}")
-	@ApiOperation(value = "Apaga um cliente")
-	public ResponseEntity<ClienteResponseDTO> delete(@PathVariable Long id) {
-		clienteService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	@ApiOperation(value = "Atualiza um cliente")
-	public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @RequestBody ClienteDTO dto) {
-		return ResponseEntity.ok().body(clienteService.update(id, dto.toObject()));
-	}
+//	@DeleteMapping(value = "/{id}")
+//	@ApiOperation(value = "Apaga um cliente")
+//	public ResponseEntity<ClienteResponseDTO> delete(@PathVariable Long id) {
+//		clienteService.delete(id);
+//		return ResponseEntity.noContent().build();
+//	}
+//
+//	@PutMapping(value = "/{id}")
+//	@ApiOperation(value = "Atualiza um cliente")
+//	public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @RequestBody ClienteDTO dto) {
+//		return ResponseEntity.ok().body(clienteService.update(id, dto.toObject()));
+//	}
 
 	@PutMapping(value = "/userOnSession")
 	@ApiOperation(value = "Atualiza cliente da sessao")
