@@ -68,6 +68,15 @@ public class ClienteService {
 		updateData(entity, cliente);
 		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
 	}
+	
+	public ClienteResponseDTO updateWithoutEncode(Long id, Cliente cliente) {
+		cliente.setPassword(PasswordUtils.generateSecurePassword(cliente.getPassword(), ConfigConstants.SALT));
+		cliente.setStatus('A');
+		Cliente entity = clienteRepository.findById(id).get();
+
+		updateData(entity, cliente);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
+	}
 
 	public ClienteResponseDTO update(Long id, Cliente cliente) {
 		cliente.setStatus('A');

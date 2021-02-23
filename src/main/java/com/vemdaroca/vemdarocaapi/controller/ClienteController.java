@@ -1,6 +1,7 @@
 package com.vemdaroca.vemdarocaapi.controller;
 
 import java.net.URI;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -38,7 +39,7 @@ public class ClienteController {
 	@Value("${environment.url}")
 	private String url;
 
-	private static String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@";
+	private static String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 	@Autowired
 	private ClienteService clienteService;
@@ -136,11 +137,11 @@ public class ClienteController {
 	@ApiOperation(value = "Recuperar cadastro")
 	public ResponseEntity<ClienteResponseDTO> create(@RequestBody String email) throws Exception {
 		Cliente cliente = clienteService.getByEmail(email);
+		
 		String passwordNew = RandomStringUtils.random(15, CHARACTERS);
+		cliente.setPassword(passwordNew);
 
-		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
-
-		ClienteResponseDTO clienteResponse = clienteService.updateWithPassword(cliente.getId(), cliente);
+		ClienteResponseDTO clienteResponse = clienteService.updateWithoutEncode(cliente.getId(), cliente);
 
 		try {
 			emailService.sendMail(email, "Recuperação de Senha",
