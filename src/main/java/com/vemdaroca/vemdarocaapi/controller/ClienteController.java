@@ -129,7 +129,7 @@ public class ClienteController {
 	public ResponseEntity<ClienteResponseDTO> updateUserSession(@RequestBody ClienteDTO dto) {
 		Authentication x = SecurityContextHolder.getContext().getAuthentication();
 		return ResponseEntity.ok()
-				.body(clienteService.update(Long.parseLong(x.getPrincipal().toString()), dto.toObject()));
+				.body(clienteService.updateWithPassword(Long.parseLong(x.getPrincipal().toString()), dto.toObject()));
 	}
 
 	@PostMapping(value = "/recuperaCadastro")
@@ -140,7 +140,7 @@ public class ClienteController {
 
 		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
 
-		ClienteResponseDTO clienteResponse = clienteService.update(cliente.getId(), cliente);
+		ClienteResponseDTO clienteResponse = clienteService.updateWithPassword(cliente.getId(), cliente);
 
 		try {
 			emailService.sendMail(email, "Recuperação de Senha",
