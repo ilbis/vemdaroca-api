@@ -38,7 +38,7 @@ public class ClienteController {
 	@Value("${environment.url}")
 	private String url;
 
-	private static String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#%^&*()-_=+<>?";
+	private static String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@";
 
 	@Autowired
 	private ClienteService clienteService;
