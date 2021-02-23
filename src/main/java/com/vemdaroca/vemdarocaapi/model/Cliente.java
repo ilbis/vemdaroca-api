@@ -58,7 +58,7 @@ public class Cliente implements UserDetails, Serializable {
 	@Column(name = "BAIRRO", length = 30)
 	private String bairro;
 
-	@Column(name = "EMAIL", length = 50)
+	@Column(name = "EMAIL", unique = true, length = 50)
 	private String email;
 
 	@Column(name = "STATUS")
