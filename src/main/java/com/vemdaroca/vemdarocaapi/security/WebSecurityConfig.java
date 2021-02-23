@@ -68,27 +68,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-
-//		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
-//				"/itempedido/**" };
-
-		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.OPTIONS, "/cliente")
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente")
 				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
 				.antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").antMatchers("/h2-console/**");
 
 	}
 
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		CorsConfiguration configuration = new CorsConfiguration();
-//		configuration.setAllowedOrigins(Arrays.asList("*"));
-//		configuration.setAllowedHeaders(Arrays.asList("*"));
-//		configuration.setAllowedMethods(Arrays.asList("*"));
-//		configuration.addExposedHeader("Authorization");
-//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		source.registerCorsConfiguration("/**", configuration);
-//		return source;
-//	}
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
