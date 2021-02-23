@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/**", "/itempedido",
 //				"/itempedido/**" };
 
-		web.ignoring().antMatchers(HttpMethod.POST, "/cliente")
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente").antMatchers(HttpMethod.OPTIONS, "/cliente")
 				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
 				.antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").antMatchers("/h2-console/**");
 
