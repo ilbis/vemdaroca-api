@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.model.ItemPedido;
+import com.vemdaroca.vemdarocaapi.model.Pedido;
+import com.vemdaroca.vemdarocaapi.repository.PedidoRepository;
+import com.vemdaroca.vemdarocaapi.service.ClienteService;
+import com.vemdaroca.vemdarocaapi.service.EmailService;
+import com.vemdaroca.vemdarocaapi.service.ExcelService;
 import com.vemdaroca.vemdarocaapi.service.ItemPedidoService;
+import com.vemdaroca.vemdarocaapi.util.CommandLineUtil;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -26,44 +35,81 @@ public class ItemPedidoController {
 
 	@Autowired
 	private ItemPedidoService itemPedidoService;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
-	@GetMapping(value = "allActive")
-	@ApiOperation(value = "Retorna todos itens de pedido ativos")
-	public ResponseEntity<List<ItemPedido>> getAllActive() {
-		return ResponseEntity.ok().body(itemPedidoService.getAllActive());
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
+	private ClienteService clienteService;
+
+	@Autowired
+	private ExcelService excelService;
+
+	@Autowired
+	private CommandLineUtil commandLineUtil;
+
+//	@GetMapping(value = "allActive")
+//	@ApiOperation(value = "Retorna todos itens de pedido ativos")
+//	public ResponseEntity<List<ItemPedido>> getAllActive() {
+//		return ResponseEntity.ok().body(itemPedidoService.getAllActive());
+//	}
+//
+//	@GetMapping(value = "/all")
+//	@ApiOperation(value = "Retorna todos itens de pedido")
+//	public ResponseEntity<List<ItemPedido>> getAll() {
+//		return ResponseEntity.ok().body(itemPedidoService.getAll());
+//	}
+//
+//	@GetMapping(value = "/{id}")
+//	@ApiOperation(value = "Retorna item do pedido por Id")
+//	public ResponseEntity<ItemPedido> getById(@PathVariable Long id) {
+//		return ResponseEntity.ok().body(itemPedidoService.getById(id));
+//	}
+//
+//	@PostMapping
+//	@ApiOperation(value = "Criar um item de pedido")
+//	public ResponseEntity<ItemPedido> create(@RequestBody ItemPedido itemPedido) {
+//		itemPedido = itemPedidoService.create(itemPedido);
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemPedido.getId())
+//				.toUri();
+//		return ResponseEntity.created(uri).body(itemPedido);
+//	}
+
+	@PostMapping(value = "/createAll")
+	@ApiOperation(value = "Criar uma lista de item de pedido")
+	public ResponseEntity<Pedido> createAll(@RequestBody List<ItemPedido> itemPedido) throws Exception {
+		Pedido pedido = itemPedidoService.createAll(itemPedido);
+
+		try {
+			Authentication x = SecurityContextHolder.getContext().getAuthentication();
+			Cliente cliente = clienteService.getById(Long.parseLong(x.getPrincipal().toString()));
+
+			pedido = pedidoRepository.findById(itemPedido.get(0).getPedido().getId()).get();
+
+			System.out.println("EMAIL: " + cliente.getEmail());
+			emailService.sendMail(cliente.getEmail(), "VEM DA ROÇA - PEDIDO",
+					emailService.formatedPedidoEmail(pedido,itemPedido));
+
+		} catch (Exception e) {
+			System.out.println("Erro ao enviar email: " + e);
+			throw new Exception(e);
+		}
+		return ResponseEntity.created(null).body(pedido);
 	}
 
-	@GetMapping(value = "/all")
-	@ApiOperation(value = "Retorna todos itens de pedido")
-	public ResponseEntity<List<ItemPedido>> getAll() {
-		return ResponseEntity.ok().body(itemPedidoService.getAll());
-	}
-
-	@GetMapping(value = "/{id}")
-	@ApiOperation(value = "Retorna item do pedido por Id")
-	public ResponseEntity<ItemPedido> getById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(itemPedidoService.getById(id));
-	}
-
-	@PostMapping
-	@ApiOperation(value = "Criar um item de pedido")
-	public ResponseEntity<ItemPedido> create(@RequestBody ItemPedido itemPedido) {
-		itemPedido = itemPedidoService.create(itemPedido);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemPedido.getId())
-				.toUri();
-		return ResponseEntity.created(uri).body(itemPedido);
-	}
-
-	@DeleteMapping(value = "/{id}")
-	@ApiOperation(value = "Apaga um item de pedido")
-	public ResponseEntity<ItemPedido> delete(@PathVariable Long id) {
-		itemPedidoService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	@ApiOperation(value = "Atualiza um item de pedido")
-	public ResponseEntity<ItemPedido> update(@PathVariable Long id, @RequestBody ItemPedido itemPedido) {
-		return ResponseEntity.ok().body(itemPedidoService.update(id, itemPedido));
-	}
+//	@DeleteMapping(value = "/{id}")
+//	@ApiOperation(value = "Apaga um item de pedido")
+//	public ResponseEntity<ItemPedido> delete(@PathVariable Long id) {
+//		itemPedidoService.delete(id);
+//		return ResponseEntity.noContent().build();
+//	}
+//
+//	@PutMapping(value = "/{id}")
+//	@ApiOperation(value = "Atualiza um item de pedido")
+//	public ResponseEntity<ItemPedido> update(@PathVariable Long id, @RequestBody ItemPedido itemPedido) {
+//		return ResponseEntity.ok().body(itemPedidoService.update(id, itemPedido));
+//	}
 }

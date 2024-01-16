@@ -1,9 +1,12 @@
 package com.vemdaroca.vemdarocaapi.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +21,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
 
 @Entity
 @Table(name = "PEDIDO")
@@ -29,7 +33,7 @@ public class Pedido implements Serializable {
 	private Long id;
 
 	@Column(name = "MOMENT", nullable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT-3")
 	private Instant moment;
 
 	@Column(name = "STATUS", nullable = false)
@@ -70,8 +74,8 @@ public class Pedido implements Serializable {
 		this.moment = moment;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public ClienteResponseDTO getCliente() {
+		return ClienteResponseDTO.toDTO(cliente);
 	}
 
 	public void setCliente(Cliente cliente) {
@@ -121,6 +125,19 @@ public class Pedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", moment=" + moment + ", status=" + status + ", cliente=" + cliente + ", items="
+				+ items + "]";
+	}
+
+	public String getDataFormatada() {
+		Date date = Date.from(moment);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+		return formatter.format(date);
 	}
 
 }

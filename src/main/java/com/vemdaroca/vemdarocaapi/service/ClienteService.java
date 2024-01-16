@@ -2,12 +2,13 @@ package com.vemdaroca.vemdarocaapi.service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vemdaroca.vemdarocaapi.config.ConfigConstants;
+import com.vemdaroca.vemdarocaapi.dto.ClienteResponseDTO;
 import com.vemdaroca.vemdarocaapi.model.Cliente;
 import com.vemdaroca.vemdarocaapi.repository.ClienteRepository;
 import com.vemdaroca.vemdarocaapi.security.PasswordUtils;
@@ -18,43 +19,70 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository clienteRepository;
 
-	public List<Cliente> getAllActive() {
-		return clienteRepository.findAllStatusActive();
+	public List<ClienteResponseDTO> getAllActive() {
+		return clienteRepository.findAllStatusActive().stream().map(c -> ClienteResponseDTO.toDTO(c))
+				.collect(Collectors.toList());
 	}
 
-	public List<Cliente> getAll() {
-		return clienteRepository.findAll();
+	public List<ClienteResponseDTO> getAll() {
+		return clienteRepository.findAll().stream().map(c -> ClienteResponseDTO.toDTO(c)).collect(Collectors.toList());
 	}
 
 	public Cliente getById(Long id) {
 		return clienteRepository.findById(id).get();
 	}
 
-	public List<Cliente> getByName(String nome) {
-		return clienteRepository.findByName(nome);
+	public List<ClienteResponseDTO> getByName(String nome) {
+		return clienteRepository.findByName(nome).stream().map(c -> ClienteResponseDTO.toDTO(c))
+				.collect(Collectors.toList());
 	}
 
-	public Cliente getByUserName(String username) {
-		return clienteRepository.findByUserName(username).get();
+	public ClienteResponseDTO getByUserName(String username) {
+		return ClienteResponseDTO.toDTO(clienteRepository.findByUserName(username).get());
 	}
 
-	public Cliente create(Cliente cliente) {
+	public Cliente getByEmail(String email) {
+		return clienteRepository.findByEmail(email).get();
+	}
+
+	public ClienteResponseDTO create(Cliente cliente) {
 		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());
 		String passwordNew = new String(decodedBytes);
 		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
-		return clienteRepository.save(cliente);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(cliente));
 	}
 
-	public Cliente delete(Long id) {
+	public ClienteResponseDTO delete(Long id) {
 		Cliente entity = clienteRepository.findById(id).get();
 		entity.setStatus('I');
-		return clienteRepository.save(entity);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
 	}
 
-	public Cliente update(Long id, Cliente cliente) {
+	public ClienteResponseDTO updateWithPassword(Long id, Cliente cliente) {
+		byte[] decodedBytes = Base64.getDecoder().decode(cliente.getPassword());
+		String passwordNew = new String(decodedBytes);
+		cliente.setPassword(PasswordUtils.generateSecurePassword(passwordNew, ConfigConstants.SALT));
+		cliente.setStatus('A');
+		Cliente entity = clienteRepository.findById(id).get();
+
+		updateData(entity, cliente);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
+	}
+	
+	public ClienteResponseDTO updateWithoutEncode(Long id, Cliente cliente) {
+		cliente.setPassword(PasswordUtils.generateSecurePassword(cliente.getPassword(), ConfigConstants.SALT));
+		cliente.setStatus('A');
+		Cliente entity = clienteRepository.findById(id).get();
+
+		updateData(entity, cliente);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
+	}
+
+	public ClienteResponseDTO update(Long id, Cliente cliente) {
+		cliente.setStatus('A');
 		Cliente entity = clienteRepository.findById(id).get();
 		updateData(entity, cliente);
-		return clienteRepository.save(entity);
+		return ClienteResponseDTO.toDTO(clienteRepository.save(entity));
 	}
 
 	private void updateData(Cliente entity, Cliente cliente) {
@@ -62,16 +90,15 @@ public class ClienteService {
 		entity.setTel(cliente.getTel());
 		entity.setRua(cliente.getRua());
 		entity.setNumero(cliente.getNumero());
-		entity.setBlocoAp(cliente.getBlocoAp());
 		entity.setComplemento(cliente.getComplemento());
+		entity.setCidade(cliente.getCidade());
 		entity.setUf(cliente.getUf());
 		entity.setCep(cliente.getCep());
 		entity.setBairro(cliente.getBairro());
-		entity.setReferencia(cliente.getReferencia());
 		entity.setEmail(cliente.getEmail());
 		entity.setStatus(cliente.getStatus());
 		entity.setUsername(cliente.getUsername());
 		entity.setPassword(cliente.getPassword());
-//		entity.setSalt(cliente.getSalt());
+		entity.setValidatorCode(cliente.getValidatorCode());
 	}
 }

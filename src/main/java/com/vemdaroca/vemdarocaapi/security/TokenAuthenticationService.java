@@ -1,6 +1,6 @@
 package com.vemdaroca.vemdarocaapi.security;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class TokenAuthenticationService {
 	static final String HEADER_STRING = "Authorization";
     private static final String AUTHORITIES_KEY = "auth";
     
-	static void addAuthentication(HttpServletResponse response, Authentication auth) {
+	static void addAuthentication(HttpServletResponse response, Authentication auth) throws IOException {
 //		final String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 //				.collect(Collectors.joining(","));
 //
@@ -55,7 +55,8 @@ public class TokenAuthenticationService {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME*1000))
                 .compact();
         
-		response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + token);
+		response.addHeader(HEADER_STRING, token);
+//		response.getWriter().write("{" + HEADER_STRING + ":" + TOKEN_PREFIX + " " + token + "}");
 	}
 
 	static Authentication getAuthentication(HttpServletRequest request) {

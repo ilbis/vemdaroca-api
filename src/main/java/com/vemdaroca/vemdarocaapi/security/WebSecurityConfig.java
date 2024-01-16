@@ -1,16 +1,21 @@
 package com.vemdaroca.vemdarocaapi.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,40 +27,69 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/h2-console/**" };
 
-	private static final String[] ADMIN_ACCESS = {
-			"/cliente",
-			"/cliente/**",
-			"/pedido",
-			"/pedido/**",
-			"/produto",
-			"/produto/**",
-			"/itempedido",
-			"/itempedido/**"
-	};
-	
+	private static final String[] ADMIN_ACCESS = { "/pedido", "/pedido/**", "/produto", "/produto/all", "/itempedido",
+			"/itempedido/all" };
+
+	private static final String[] USER_GET_ACCESS = { "/produto/allActive", "cliente/userOnSession" };
+	private static final String[] USER_PUT_ACCESS = { "cliente/userOnSession" };
+	private static final String[] USER_POST_ACCESS = { "/itempedido/createAll" };
+
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-				.antMatchers(HttpMethod.GET,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.POST,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.PUT,ADMIN_ACCESS).hasRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE,ADMIN_ACCESS).hasRole("ADMIN")
-				.anyRequest()
-				.authenticated().and()
+		httpSecurity.cors().and().csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente").permitAll().antMatchers(HttpMethod.OPTIONS, "/cliente")
+				.permitAll().antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/cliente/recuperaCadastro").permitAll()
+				.antMatchers(HttpMethod.GET, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.GET, USER_GET_ACCESS)
+				.hasAnyRole("ADMIN", "USER").antMatchers(HttpMethod.PUT, USER_PUT_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, ADMIN_ACCESS).hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST, USER_POST_ACCESS).hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.PUT, ADMIN_ACCESS).hasRole("ADMIN").antMatchers(HttpMethod.DELETE, ADMIN_ACCESS)
+				.hasRole("ADMIN").and().authorizeRequests().anyRequest().authenticated().and()
 
 				// filtra requisições de login
+
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
 
 				// filtra outras requisições para verificar a presença do JWT no header
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// cria uma conta default
-//		auth.inMemoryAuthentication().withUser("admin").password("{noop}password").roles("ADMIN");
 		auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(HttpMethod.POST, "/cliente")
+				.antMatchers(HttpMethod.POST, "/cliente/recuperaCadastro")
+				.antMatchers(HttpMethod.GET, "/cliente/confirmaCadastro/**").antMatchers("/h2-console/**");
+
+	}
+
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOrigins(Arrays.asList("*"));
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("OPTIONS");
+		config.addAllowedMethod("GET");
+		config.addAllowedMethod("POST");
+		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("DELETE");
+		config.addExposedHeader("Authorization");
+
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
 	}
 }

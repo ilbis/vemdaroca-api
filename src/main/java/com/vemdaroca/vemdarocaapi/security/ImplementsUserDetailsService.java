@@ -21,10 +21,10 @@ public class ImplementsUserDetailsService implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Cliente cliente = clienteRepository.findByUserName(username)
+		Cliente cliente = clienteRepository.findByUserNameActive(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 		
-		return new User(cliente.getUsername(), cliente.getPassword(), true, true, true, true, cliente.getAuthorities());
+		return new User(cliente.getId().toString(), cliente.getPassword(), true, true, true, true, cliente.getAuthorities());
 	}
 
 }

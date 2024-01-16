@@ -1,7 +1,6 @@
 package com.vemdaroca.vemdarocaapi.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ public class ProdutoService {
 	}
 
 	public List<Produto> getAll() {
-		return produtoRepository.findAll();
+		return produtoRepository.findAllNoRemoved();
 	}
 
 	public Produto getById(Long id) {
@@ -41,7 +40,7 @@ public class ProdutoService {
 
 	public Produto delete(Long id) {
 		Produto entity = produtoRepository.findById(id).get();
-		entity.setStatus('I');
+		entity.setStatus('R');
 		return produtoRepository.save(entity);
 	}
 
@@ -49,6 +48,10 @@ public class ProdutoService {
 		Produto entity = produtoRepository.findById(id).get();
 		updateData(entity, produto);
 		return produtoRepository.save(entity);
+	}
+	
+	public List<Produto> updateAll(List<Produto> produtos) {
+		return produtoRepository.saveAll(produtos);
 	}
 
 	private void updateData(Produto entity, Produto produto) {

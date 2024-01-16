@@ -10,8 +10,12 @@ import com.vemdaroca.vemdarocaapi.model.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-	@Query("SELECT e FROM Produto e WHERE e.status= 'A'")
+	@Query("SELECT e FROM Produto e WHERE e.status= 'A' ORDER BY e.tipo")
 	List<Produto> findAllStatusActive();
+	
+	@Query("SELECT e FROM Produto e WHERE e.status= 'A' OR e.status= 'I' ORDER BY e.tipo")
+	List<Produto> findAllNoRemoved();
+	
 
 	@Query("SELECT e FROM Produto e WHERE e.nome LIKE :nome%")
 	List<Produto> findByName(@Param("nome") String nome);
